@@ -4,6 +4,10 @@ import uuid
 from datetime import datetime
 from deepdiff import DeepDiff
 
+def load_json_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return json.load(file)
+
 def create_run_directory(base_path, env):
     """Create a directory for a new run."""
     date_str = datetime.now().strftime("%Y-%m-%d")
@@ -49,7 +53,7 @@ def update_response_file(run_order, customer_id, response_data, base_path='runs'
         json.dump(data, file, indent=4, ensure_ascii=False)
 
 
-def compare_responses(run_path):
+def compare_responses(run_path = "runs"):
     """
     Compares responses in before.json and after.json within a specific run directory,
     and writes the differences to results.json in the same directory.
