@@ -49,10 +49,33 @@ def update_response_file(run_order, customer_id, response_data, base_path='runs'
         json.dump(data, file, indent=4, ensure_ascii=False)
 
 
-def compare_responses(before_data, after_data):
+def compare_responses(run_path):
+    """
+    Compares responses in before.json and after.json within a specific run directory,
+    and writes the differences to results.json in the same directory.
+
+    Parameters:
+    - run_path: The path to the specific run directory.
+    """
+    before_path = os.path.join(run_path, 'before.json')
+    after_path = os.path.join(run_path, 'after.json')
+    results_path = os.path.join(run_path, 'results.json')
+
+    # Load the data from before and after JSON files.
+    with open(before_path, 'r', encoding='utf-8') as before_file:
+        before_data = json.load(before_file)
+    
+    with open(after_path, 'r', encoding='utf-8') as after_file:
+        after_data = json.load(after_file)
+
+    # Compare the two sets of data.
     diff = DeepDiff(before_data, after_data, ignore_order=True).to_dict()
+
+    # Write the comparison results to results.json.
+    with open(results_path, 'w', encoding='utf-8') as results_file:
+        json.dump(diff, results_file, indent=4, ensure_ascii=False)
+
     if diff:
-        print("Differences found:")
-        print(json.dumps(diff, indent=4))
+        print("Differences found. See results.json for details.")
     else:
-        print("No differences found.")
+        print("No differences found between before.json and after.json.")
