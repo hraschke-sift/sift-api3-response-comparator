@@ -36,8 +36,6 @@ def update_response_file(test_run_dir, run_order, customer_id, response_data):
     if os.path.exists(file_path):
       with open(file_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
-    else:
-      raise FileNotFoundError(f"File not found: {file_path}")
 
     # Check if there's an entry for the given customer_id, append if there is, or create a new one if not.
     if customer_id in data:

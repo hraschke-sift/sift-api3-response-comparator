@@ -1,4 +1,5 @@
 import json
+import datetime
 
 def generate_calls_json(test_run_dir="runs", env="dev"):
     """
@@ -9,8 +10,6 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
     - env: Environment specifier, used to determine the base URL
     """
 
-    output = f"{test_run_dir}/calls.json"
-
     url_options = {
         'dev': 'https://localhost:5323',
         'expr': 'https://experiment-console.sift.com',
@@ -19,7 +18,7 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
     }
     url = url_options.get(env, '')
 
-    data_input_method = input("Do you want to paste completed JSON? (y/n): ").lower()
+    data_input_method = input("Do you want to paste completed JSON? (y/N): ").lower()
 
     if data_input_method == 'y':
         valid_json = False
@@ -37,6 +36,7 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
             print("Invalid data JSON: 'calls' must be a list")
           else: 
             valid_json = True
+        data['base_url'] = url
 
     else:
         cids = input("Enter customer IDs separated by comma: ").replace(" ", "").split(",")
@@ -51,16 +51,22 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
             if call['method'] == 'POST':
                 call['body'] = input("Enter call body (JSON format): ")
             calls.append(call)
-            more_calls = input("Add another call? (y/n): ").lower() == 'y'
+            more_calls = input("Add another call? (y/N): ").lower() == 'y'
 
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data = {
+            "execution_time": current_time,
             "base_url": url,
             "cids": cids,
             "calls": calls
         }
-        data["rerun"] = json.dumps(data, separators=(',', ':'))
-
-    with open(output, 'w', encoding='utf-8') as f:
+        
+    calls_file = f"{test_run_dir}/calls.json"
+    with open(calls_file, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-    print(f"calls.json has been saved to {output}")
+    print(f"calls.json has been saved to {calls_file}")
+
+    rerun_file = f"{test_run_dir}/rerun.json"
+    with open(rerun_file, 'w', encoding='utf-8') as f:
+      json.dump(data, f, ensure_ascii=False, separators=(',', ':'))

@@ -25,24 +25,15 @@ def execute_api_calls(run_order, test_run_dir='runs/'):
 
     print(f"API calls for {run_order} completed and stored in {test_run_dir}.")
 
-
-
-
 def main():
     # Get environment and create test run directory
-    env = input("Enter environment (dev/expr/stg1/prod): ")
+    env = input("Enter environment (dev/expr/stg1/prod): ").lower()
     valid_env_options = ['dev', 'expr', 'stg1', 'prod']
     while env not in valid_env_options:
-      print("Invalid environment. Please enter a valid environment (dev/expr/stg1/prod):")
-      env = input("Enter environment (dev/expr/stg1/prod): ")
+      env = input("Invalid environment. Please enter a valid environment (dev/expr/stg1/prod)").lower()
 
     test_run_dir = create_run_directory("runs/", env)
-    
-    # Add empty files at test_run_dir/before.json and test_run_dir/after.json
-    before_file = os.path.join(test_run_dir, "before.json")
-    after_file = os.path.join(test_run_dir, "after.json")
-    open(before_file, 'w').close()
-    open(after_file, 'w').close()
+    print(f"Test run directory created at {test_run_dir}")
 
     # Generate calls.json via CLI prompts
     generate_calls_json(test_run_dir, env)
