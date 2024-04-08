@@ -1,0 +1,58 @@
+import os
+import json
+import uuid
+from datetime import datetime
+from deepdiff import DeepDiff
+
+def create_run_directory(base_path, env):
+    """Create a directory for a new run."""
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    run_id = uuid.uuid4().hex
+    dir_path = os.path.join(base_path, f"{env}_{date_str}_{run_id}")
+    os.makedirs(dir_path, exist_ok=True)
+    return dir_path
+
+def save_json(file_path, data):
+    """Save data to a JSON file."""
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+def update_response_file(run_order, customer_id, response_data, base_path='runs'):
+    """
+    Updates the before.json or after.json file with the new response data for a given customer_id.
+
+    Parameters:
+    - run_order: 'before' or 'after', indicating which file to update.
+    - customer_id: The customer ID for which the response is associated.
+    - response_data: The JSON response data to append.
+    - base_path: Base directory where the runs are stored.
+    """
+    # Define the path to the appropriate file based on the run order.
+    file_path = os.path.join(base_path, f"{run_order}.json")
+
+    # Initialize an empty dictionary to hold our data.
+    data = {}
+
+    # If the file already exists, load its contents into the data dictionary.
+    if os.path.exists(file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+
+    # Check if there's an entry for the given customer_id, append if there is, or create a new one if not.
+    if customer_id in data:
+        data[customer_id].append(response_data)
+    else:
+        data[customer_id] = [response_data]
+
+    # Write the updated data back to the file.
+    with open(file_path, 'w', encoding='utf-8') as file:
+        json.dump(data, file, indent=4, ensure_ascii=False)
+
+
+def compare_responses(before_data, after_data):
+    diff = DeepDiff(before_data, after_data, ignore_order=True).to_dict()
+    if diff:
+        print("Differences found:")
+        print(json.dumps(diff, indent=4))
+    else:
+        print("No differences found.")
