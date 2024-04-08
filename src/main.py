@@ -21,7 +21,7 @@ def execute_api_calls(run_order, test_run_dir='runs/'):
             if response_data:
                 update_response_file(test_run_dir, run_order, cid, response_data)
 
-    print(f"API calls for {run_order} completed and stored in {run_directory}.")
+    print(f"API calls for {run_order} completed and stored in {test_run_dir}.")
 
 
 def main():
