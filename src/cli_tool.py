@@ -8,13 +8,27 @@ def main():
     parser.add_argument("-o", "--output", help="Output file path for calls.json", default="calls.json")
     args = parser.parse_args()
 
+    env = input("Enter environment (dev/expr/stg1/prod): ")
+    valid_env_options = ['dev', 'expr', 'stg1', 'prod']
+    while env not in valid_env_options:
+      print("Invalid environment. Please enter a valid environment (dev/expr/stg1/prod):")
+      env = input("Enter environment (dev/expr/stg1/prod): ")
+
+    url_options = {
+      'dev': 'https://localhost:5323',
+      'expr': 'https://experiment-console.sift.com',
+      'stg1': 'https://staging-console.sift.com',
+      'prod': 'https://console.sift.com'
+    }
+    url = url_options.get(env, '')
+
     cids = input("Enter customer IDs separated by comma: ").split(",")
     calls = []
     more_calls = True
 
     while more_calls:
         call = {}
-        call['url'] = input("Enter call URL: ")
+        call['url'] = input(f"Enter call endpoint: {url}/v3/accounts/<cid>/")
         call['method'] = input("Enter call method (GET/POST): ").upper()
         if call['method'] == 'POST':
             call['body'] = input("Enter call body (JSON format): ")
@@ -22,6 +36,7 @@ def main():
         more_calls = input("Add another call? (y/n): ").lower() == 'y'
 
     data = {
+        "base_url": url,
         "cids": cids,
         "calls": calls
     }
