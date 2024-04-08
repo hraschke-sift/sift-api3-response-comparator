@@ -1,5 +1,5 @@
 from api_client import make_api_call
-from cli_tool import generate_calls_json
+from user_input_client import generate_calls_json
 from utils import create_run_directory, load_json_file, update_response_file, compare_responses
 import os
 
@@ -33,6 +33,11 @@ def main():
       env = input("Enter environment (dev/expr/stg1/prod): ")
 
     test_run_dir = create_run_directory("runs/", env)
+    # Add empty files at test_run_dir/before.json and test_run_dir/after.json
+    before_file = os.path.join(test_run_dir, "/before.json")
+    after_file = os.path.join(test_run_dir, "/after.json")
+    open(before_file, 'w').close()
+    open(after_file, 'w').close()
 
     # Generate calls.json via CLI prompts
     generate_calls_json(test_run_dir, env)
