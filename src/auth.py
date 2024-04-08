@@ -3,7 +3,7 @@ import requests
 import yaml
 from getpass import getpass
 
-CONF_FILE = os.path.expand_path('~/.api3_client.yaml')
+CONF_FILE = os.path.expanduser('~/.api3_client.yaml')
 
 def read_conf():
     if os.path.exists(CONF_FILE):
