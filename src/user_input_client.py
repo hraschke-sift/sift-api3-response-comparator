@@ -22,17 +22,22 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
     data_input_method = input("Do you want to paste completed JSON? (y/n): ").lower()
 
     if data_input_method == 'y':
-        data = json.loads(input("Paste your JSON here: "))
+        valid_json = False
+        while not valid_json:
+          data = json.loads(input("Paste your JSON here: "))
 
-        # Validate the data JSON
-        if not isinstance(data.get("base_url"), str):
-          raise ValueError("Invalid data JSON: 'base_url' must be a string")
+          # Validate the data JSON
+          if not isinstance(data, dict):
+            print("Invalid data JSON: Must be an object. Make sure it is a single line before posting.")
+          elif not isinstance(data.get("base_url"), str):
+            print("Invalid data JSON: 'base_url' must be a string")
+          elif not isinstance(data.get("cids"), list):
+            print("Invalid data JSON: 'cids' must be a list")
+          elif not isinstance(data.get("calls"), list):
+            print("Invalid data JSON: 'calls' must be a list")
+          else: 
+            valid_json = True
 
-        if not isinstance(data.get("cids"), list):
-          raise ValueError("Invalid data JSON: 'cids' must be a list")
-
-        if not isinstance(data.get("calls"), list):
-          raise ValueError("Invalid data JSON: 'calls' must be a list")
     else:
         cids = input("Enter customer IDs separated by comma: ").replace(" ", "").split(",")
         calls = []
@@ -53,6 +58,7 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
             "cids": cids,
             "calls": calls
         }
+        data["rerun"] = json.dumps(data, separators=(',', ':'))
 
     with open(output, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)

@@ -20,8 +20,12 @@ def execute_api_calls(run_order, test_run_dir='runs/'):
             # Save response data
             if response_data:
                 update_response_file(test_run_dir, run_order, cid, response_data)
+            else:
+                update_response_file(test_run_dir, run_order, cid, {"error": "API call failed"})
 
     print(f"API calls for {run_order} completed and stored in {test_run_dir}.")
+
+
 
 
 def main():
@@ -33,9 +37,10 @@ def main():
       env = input("Enter environment (dev/expr/stg1/prod): ")
 
     test_run_dir = create_run_directory("runs/", env)
+    
     # Add empty files at test_run_dir/before.json and test_run_dir/after.json
-    before_file = os.path.join(test_run_dir, "/before.json")
-    after_file = os.path.join(test_run_dir, "/after.json")
+    before_file = os.path.join(test_run_dir, "before.json")
+    after_file = os.path.join(test_run_dir, "after.json")
     open(before_file, 'w').close()
     open(after_file, 'w').close()
 

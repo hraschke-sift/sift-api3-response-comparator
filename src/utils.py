@@ -27,7 +27,7 @@ def update_response_file(test_run_dir, run_order, customer_id, response_data):
     - base_path: Base directory where the runs are stored.
     """
     # Define the path to the appropriate file based on the run order.
-    file_path = os.path.join(test_run_dir, f"/{run_order}.json")
+    file_path = os.path.join(test_run_dir, f"{run_order}.json")
 
     # Initialize an empty dictionary to hold our data.
     data = {}
@@ -58,9 +58,9 @@ def compare_responses(test_run_dir):
     Parameters:
     - run_path: The path to the specific run directory.
     """
-    before_path = os.path.join(test_run_dir, '/before.json')
-    after_path = os.path.join(test_run_dir, '/after.json')
-    results_path = os.path.join(test_run_dir, '/results.json')
+    before_path = os.path.join(test_run_dir, 'before.json')
+    after_path = os.path.join(test_run_dir, 'after.json')
+    results_path = os.path.join(test_run_dir, 'results.json')
 
     # Load the data from before and after JSON files.
     with open(before_path, 'r', encoding='utf-8') as before_file:

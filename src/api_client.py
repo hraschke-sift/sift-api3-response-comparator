@@ -10,6 +10,7 @@ def make_api_call(url, method, headers=None, body=None, base_url='', auth_endpoi
 
     # Complete URL
     full_url = f"{base_url}{url}"
+    print(full_url)
 
     try:
         if method == 'GET':
