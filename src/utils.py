@@ -16,12 +16,7 @@ def create_run_directory(base_path, env):
     os.makedirs(dir_path, exist_ok=True)
     return dir_path
 
-def save_json(file_path, data):
-    """Save data to a JSON file."""
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-
-def update_response_file(run_order, customer_id, response_data, base_path='runs'):
+def update_response_file(test_run_dir, run_order, customer_id, response_data):
     """
     Updates the before.json or after.json file with the new response data for a given customer_id.
 
@@ -32,15 +27,17 @@ def update_response_file(run_order, customer_id, response_data, base_path='runs'
     - base_path: Base directory where the runs are stored.
     """
     # Define the path to the appropriate file based on the run order.
-    file_path = os.path.join(base_path, f"{run_order}.json")
+    file_path = os.path.join(test_run_dir, f"/{run_order}.json")
 
     # Initialize an empty dictionary to hold our data.
     data = {}
 
     # If the file already exists, load its contents into the data dictionary.
     if os.path.exists(file_path):
-        with open(file_path, 'r', encoding='utf-8') as file:
-            data = json.load(file)
+      with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    else:
+      raise FileNotFoundError(f"File not found: {file_path}")
 
     # Check if there's an entry for the given customer_id, append if there is, or create a new one if not.
     if customer_id in data:
@@ -53,7 +50,7 @@ def update_response_file(run_order, customer_id, response_data, base_path='runs'
         json.dump(data, file, indent=4, ensure_ascii=False)
 
 
-def compare_responses(run_path="runs"):
+def compare_responses(test_run_dir):
     """
     Compares responses in before.json and after.json within a specific run directory,
     and writes the differences to results.json in the same directory.
@@ -61,9 +58,9 @@ def compare_responses(run_path="runs"):
     Parameters:
     - run_path: The path to the specific run directory.
     """
-    before_path = os.path.join(run_path, 'before.json')
-    after_path = os.path.join(run_path, 'after.json')
-    results_path = os.path.join(run_path, 'results.json')
+    before_path = os.path.join(test_run_dir, '/before.json')
+    after_path = os.path.join(test_run_dir, '/after.json')
+    results_path = os.path.join(test_run_dir, '/results.json')
 
     # Load the data from before and after JSON files.
     with open(before_path, 'r', encoding='utf-8') as before_file:
