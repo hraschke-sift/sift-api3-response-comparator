@@ -53,7 +53,7 @@ def update_response_file(run_order, customer_id, response_data, base_path='runs'
         json.dump(data, file, indent=4, ensure_ascii=False)
 
 
-def compare_responses(run_path = "runs"):
+def compare_responses(run_path="runs"):
     """
     Compares responses in before.json and after.json within a specific run directory,
     and writes the differences to results.json in the same directory.
