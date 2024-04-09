@@ -1,6 +1,5 @@
 import os
 import json
-import uuid
 from datetime import datetime
 from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
@@ -11,9 +10,8 @@ def load_json_file(file_path):
 
 def create_run_directory(base_path, env):
     """Create a directory for a new run."""
-    date_str = datetime.now().strftime("%Y-%m-%d")
-    run_id = uuid.uuid4().hex
-    dir_path = os.path.join(base_path, f"{env}_{date_str}_{run_id}")
+    timestamp = datetime.now().timestamp()
+    dir_path = os.path.join(base_path, f"{env}_{timestamp}")
     os.makedirs(dir_path, exist_ok=True)
     return dir_path
 
