@@ -5,13 +5,12 @@ from utils import (
     load_json_file,
     update_response_file,
     compare_responses,
-    get_url_from_env,
 )
 import os
 
 
 def execute_api_calls(
-    run_order, test_run_dir="runs/", auth_endpoint="https://console.sift.com"
+    run_order, test_run_dir="runs/", env="prod"
 ):
     calls_config = load_json_file(f"{test_run_dir}/calls.json")
     base_url = calls_config["base_url"]
@@ -27,7 +26,7 @@ def execute_api_calls(
                 call["method"],
                 body=call.get("body"),
                 base_url=base_url,
-                auth_endpoint=auth_endpoint,
+                env=env,
             )
 
             call_index = calls.index(call)
@@ -67,7 +66,7 @@ def main():
 
     # Execute API calls for "before"
     print("Executing 'before' API calls...")
-    execute_api_calls("before", test_run_dir, get_url_from_env(env))
+    execute_api_calls("before", test_run_dir, env)
 
     # Pause for database migration
     input(
@@ -76,7 +75,7 @@ def main():
 
     # Execute API calls for "after"
     print("Executing 'after' API calls...")
-    execute_api_calls("after", test_run_dir, get_url_from_env(env))
+    execute_api_calls("after", test_run_dir, env)
 
     # Compare the results
     print("Comparing 'before' and 'after' API calls...")

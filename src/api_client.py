@@ -11,11 +11,11 @@ def make_api_call(
     headers=None,
     body=None,
     base_url="",
-    auth_endpoint="https://console.sift.com",
+    env="prod",
     retry=0,
 ):
     # Include the bearer token in headers
-    token = get_auth_token(auth_endpoint, retry > 0)
+    token = get_auth_token(env, retry > 0)
     if not headers:
         headers = {}
     headers["Authorization"] = f"Bearer {token}"
@@ -39,7 +39,7 @@ def make_api_call(
         time.sleep(2)
         return (
             make_api_call(
-                url, method, headers, body, base_url, auth_endpoint, retry + 1
+                url, method, headers, body, base_url, env, retry + 1
             )
             if retry < max_retries
             else None
