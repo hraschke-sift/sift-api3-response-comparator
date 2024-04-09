@@ -35,7 +35,7 @@ def refresh_auth(refresh_token, endpoint):
         return auth_token
     else:
         print("Refresh token has expired, please authenticate again.")
-        return None
+        return password_auth(endpoint)
 
 def password_auth(endpoint):
     username = input("Username: ")
@@ -57,7 +57,7 @@ def password_auth(endpoint):
         return data['access_token']
     else:
         print("Failed to authenticate")
-        return None
+        return password_auth(endpoint)
 
 def get_auth_token(endpoint):
     conf = read_conf()
