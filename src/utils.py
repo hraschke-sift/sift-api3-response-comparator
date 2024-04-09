@@ -24,7 +24,7 @@ def get_url_from_env(env):
         "dev": "https://localhost:5323",
         "expr": "https://experiment-console.sift.com",
         "stg1": "https://staging-console.siftscience.com",
-        "prod": "https://console.siftscience.com",
+        "prod": "https://console.sift.com",
     }
     return url_options.get(env, "")
 

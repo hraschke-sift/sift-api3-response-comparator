@@ -21,7 +21,6 @@ def make_api_call(
     headers["Authorization"] = f"Bearer {token}"
     headers["Content-Type"] = "application/json"
 
-    print(headers)
     full_url = f"{base_url}{url}"
 
     try:

@@ -72,7 +72,6 @@ def password_auth(endpoint):
         return data["access_token"]
     else:
         print("Failed to authenticate")
-        print(response.json())
         return password_auth(endpoint)
 
 
