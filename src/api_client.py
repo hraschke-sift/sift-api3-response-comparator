@@ -1,6 +1,7 @@
 import requests
 from auth import get_auth_token
 
+max_retries = 3
 
 def make_api_call(
     url,
@@ -9,9 +10,10 @@ def make_api_call(
     body=None,
     base_url="",
     auth_endpoint="https://console.sift.com",
+    retry=0,
 ):
     # Include the bearer token in headers
-    token = get_auth_token(auth_endpoint)
+    token = get_auth_token(auth_endpoint, retry > 0)
     if not headers:
         headers = {}
     headers["Authorization"] = f"Bearer {token}"
@@ -27,4 +29,4 @@ def make_api_call(
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
-        return None
+        return make_api_call(retry + 1) if retry < max_retries else None

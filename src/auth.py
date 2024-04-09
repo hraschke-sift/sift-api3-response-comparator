@@ -76,12 +76,14 @@ def password_auth(endpoint):
         return password_auth(endpoint)
 
 
-def get_auth_token(endpoint):
+def get_auth_token(endpoint, is_retry=False):
     conf = read_conf()
     auth_token = conf.get("auth_token")
     refresh_token = conf.get("refresh_token")
 
     if auth_token and refresh_token:
-        return refresh_auth(refresh_token, endpoint)
+        if is_retry:
+          return refresh_auth(refresh_token, endpoint)
+        return auth_token
     else:
         return password_auth(endpoint)
