@@ -67,7 +67,7 @@ def main():
 
     # Execute API calls for "before"
     print("Executing 'before' API calls...")
-    execute_api_calls("before", test_run_dir)
+    execute_api_calls("before", test_run_dir, get_url_from_env(env))
 
     # Pause for database migration
     input(
