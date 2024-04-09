@@ -6,6 +6,7 @@ This tool was built specifically for the [Snowflake Insights Migration in 2024](
 
 ## Features
 This project uses the same config file as the ruby [api3 client](https://github.com/SiftScience/ruby/tree/main/ruby/api3_client), so if you have authenticated with this tool or the other, they will share a bearer token.
+NOTE: This is no longer true. Instead of `~/.api3_client.yaml`, it now uses `~/.api3_tokens.yaml`, which stores environment-specific tokens.
 
 ## Prerequisites
 Before you begin, ensure you have met the following requirements:
@@ -122,4 +123,7 @@ Please note, the `runs/` and `venv/` directories are generated during the use of
 ## Changelog
 ### [0.0.1] - 2024-04-08
 Initial version. Known bugs:
-- in non-production environments, we always get 401s for some reason
+- in non-production environments, we always get 401s
+
+### [0.1.0] - 2024-04-08
+Bug fix for 401s in other environments. Now uses environment-specific auth.
