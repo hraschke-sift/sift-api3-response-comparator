@@ -18,29 +18,29 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
     data_input_method = input("Do you want to paste completed JSON? (y/N): ").lower()
 
     if data_input_method == "y":
-      valid_json = False
-      while not valid_json:
-        data = json.loads(input("Paste your JSON here: "))
+        valid_json = False
+        while not valid_json:
+            data = json.loads(input("Paste your JSON here: "))
 
-        # Validate the data JSON
-        try:
-          if not isinstance(data, dict):
-            print(
-              "Invalid data JSON: Must be an object. Make sure it is a single line before posting."
-            )
-          elif not isinstance(data.get("base_url"), str):
-            print("Invalid data JSON: 'base_url' must be a string")
-          elif not isinstance(data.get("cids"), list):
-            print("Invalid data JSON: 'cids' must be a list")
-          elif not isinstance(data.get("calls"), list):
-            print("Invalid data JSON: 'calls' must be a list")
-          else:
-            valid_json = True
-        except json.JSONDecodeError:
-          print("Invalid JSON format. Please try again.")
-            
-        data["base_url"] = url
-        data["execution_time"] = current_time
+            # Validate the data JSON
+            try:
+                if not isinstance(data, dict):
+                    print(
+                        "Invalid data JSON: Must be an object. Make sure it is a single line before posting."
+                    )
+                elif not isinstance(data.get("base_url"), str):
+                    print("Invalid data JSON: 'base_url' must be a string")
+                elif not isinstance(data.get("cids"), list):
+                    print("Invalid data JSON: 'cids' must be a list")
+                elif not isinstance(data.get("calls"), list):
+                    print("Invalid data JSON: 'calls' must be a list")
+                else:
+                    valid_json = True
+            except json.JSONDecodeError:
+                print("Invalid JSON format. Please try again.")
+
+            data["base_url"] = url
+            data["execution_time"] = current_time
 
     else:
         cids = (
