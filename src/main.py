@@ -17,11 +17,13 @@ def execute_api_calls(run_order, test_run_dir='runs/'):
             url = f"/v3/accounts/{cid}/{call['url'].lstrip('/')}"  # Ensure no double slashes
             response_data = make_api_call(url, call['method'], body=call.get('body'), base_url=base_url, auth_endpoint=auth_endpoint)
 
+            call_string = call['url'].split('?')[0]
+
             # Save response data
             if response_data:
-                update_response_file(test_run_dir, run_order, cid, response_data)
+                update_response_file(test_run_dir, run_order, cid, call_string, response_data)
             else:
-                update_response_file(test_run_dir, run_order, cid, {"error": "API call failed"})
+                update_response_file(test_run_dir, run_order, cid, call_string, {"error": "API call failed"})
 
     print(f"API calls for {run_order} completed and stored in {test_run_dir}.")
 

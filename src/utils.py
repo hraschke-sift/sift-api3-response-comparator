@@ -16,7 +16,7 @@ def create_run_directory(base_path, env):
     os.makedirs(dir_path, exist_ok=True)
     return dir_path
 
-def update_response_file(test_run_dir, run_order, customer_id, response_data):
+def update_response_file(test_run_dir, run_order, customer_id, call_string, response_data):
     """
     Updates the before.json or after.json file with the new response data for a given customer_id.
 
@@ -39,9 +39,9 @@ def update_response_file(test_run_dir, run_order, customer_id, response_data):
 
     # Check if there's an entry for the given customer_id, append if there is, or create a new one if not.
     if customer_id in data:
-        data[customer_id].append(response_data)
+      data[customer_id][call_string] = response_data
     else:
-        data[customer_id] = [response_data]
+      data[customer_id] = { call_string: response_data }
 
     # Write the updated data back to the file.
     with open(file_path, 'w', encoding='utf-8') as file:
