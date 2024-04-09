@@ -22,9 +22,7 @@ git clone git@github.com:hraschke-sift/sift-api3-response-comparator.git
 cd sift-api3-response-comparator
 ```
 2. **Set up a virtual environment** (recommended):
-```
-sh
-Copy code
+```sh
 python3 -m venv venv
 source venv/bin/activate
 ```
