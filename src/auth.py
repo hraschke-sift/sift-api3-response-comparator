@@ -19,14 +19,14 @@ def read_conf(env):
 
 
 def write_conf(env, data):
-  if os.path.exists(CONF_FILE):
-    with open(CONF_FILE, "r") as file:
-      conf_data = yaml.safe_load(file)
-    conf_data[env] = data
-  else:
-    conf_data = {env: data}
-  with open(CONF_FILE, "w") as file:
-    yaml.dump(conf_data, file, default_flow_style=False)
+    if os.path.exists(CONF_FILE):
+        with open(CONF_FILE, "r") as file:
+            conf_data = yaml.safe_load(file)
+        conf_data[env] = data
+    else:
+        conf_data = {env: data}
+    with open(CONF_FILE, "w") as file:
+        yaml.dump(conf_data, file, default_flow_style=False)
 
 
 def refresh_auth(refresh_token, env):
@@ -73,11 +73,11 @@ def password_auth(env):
         print("Authentication successful")
         data = response.json()
         write_conf(
-           env,
+            env,
             {
                 "auth_token": data["access_token"],
                 "refresh_token": data.get("refresh_token"),
-            }
+            },
         )
         return data["access_token"]
     else:

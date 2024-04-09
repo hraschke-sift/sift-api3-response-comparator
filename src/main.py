@@ -9,9 +9,7 @@ from utils import (
 import os
 
 
-def execute_api_calls(
-    run_order, test_run_dir="runs/", env="prod"
-):
+def execute_api_calls(run_order, test_run_dir="runs/", env="prod"):
     calls_config = load_json_file(f"{test_run_dir}/calls.json")
     base_url = calls_config["base_url"]
     cids = calls_config["cids"]

@@ -38,9 +38,7 @@ def make_api_call(
         # Otherwise, retry the request if it failed
         time.sleep(2)
         return (
-            make_api_call(
-                url, method, headers, body, base_url, env, retry + 1
-            )
+            make_api_call(url, method, headers, body, base_url, env, retry + 1)
             if retry < max_retries
             else None
         )
