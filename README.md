@@ -2,10 +2,10 @@
 
 This Python tool automates the process of validating database migrations and API3 changes that specifically affect data in the console by comparing API responses before and after the migration. It's designed to ensure that changes in the database or code do not unintentionally affect the outputs of various API calls.
 
-This tool was built specifically for the (Snowflake Insights Migration in 2024)[https://sift.atlassian.net/wiki/spaces/RNDTEAM/pages/2257289611/Standardize+Console+Reporting+Data]. It assumes all endpoints will begin with `/v3/accounts/{{customer_id}}/`. It could therefore be used to test any call that starts with that combination.
+This tool was built specifically for the [Snowflake Insights Migration in 2024](https://sift.atlassian.net/wiki/spaces/RNDTEAM/pages/2257289611/Standardize+Console+Reporting+Data). It assumes all endpoints will begin with `/v3/accounts/{{customer_id}}/`. It could therefore be used to test any call that starts with that combination.
 
 ## Features
-This project uses the same config file as the ruby (api3 client)[https://github.com/SiftScience/ruby/tree/main/ruby/api3_client], so if you have authenticated with this tool or the other, they will share a bearer token.
+This project uses the same config file as the ruby [api3 client](https://github.com/SiftScience/ruby/tree/main/ruby/api3_client), so if you have authenticated with this tool or the other, they will share a bearer token.
 
 ## Prerequisites
 Before you begin, ensure you have met the following requirements:
@@ -41,7 +41,7 @@ This tool assumes that you are running a series of requests for a series of Cust
 * "stg1": https://staging-console.siftscience.com
 * "prod": https://console.siftscience.com
 
-Before you begin, collect the CIDs for the customers that you want to run these requests for and make sure you have access to their data ((Request Spoofing)[https://sift.atlassian.net/wiki/spaces/RNDTEAM/pages/1821803264/Sift+Admin+Permissions+Policy#Requesting-Access-(employee)]).
+Before you begin, collect the CIDs for the customers that you want to run these requests for and make sure you have access to their data ([Request Spoofing](https://sift.atlassian.net/wiki/spaces/RNDTEAM/pages/1821803264/Sift+Admin+Permissions+Policy#Requesting-Access-(employee))).
 
 You will also want to compile a list of the API3 endpoints that you will want to hit. All of them will need to begin with `/v3/accounts/{{cid}}/`, where `cid` will be filled in with the customer ids you collected. Copy all requests starting with the text after the customer id and paste them into a list. You will add them one-by-one using the prompter.
 
@@ -118,3 +118,8 @@ sift-api3-response-comparator/
 - **venv/**: Recommended directory for the Python virtual environment to ensure dependencies are isolated from the system's Python environment.
 
 Please note, the `runs/` and `venv/` directories are generated during the use of the tool and should not be included in version control (as specified in `.gitignore`).
+
+## Changelog
+### [0.0.1] - 2024-04-08
+Initial version. Known bugs:
+- in non-production environments, we always get 401s for some reason
