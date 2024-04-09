@@ -2,3 +2,4 @@ This project uses the same config file as the ruby (api3 client)[https://github.
 
 Make sure to use your sift console credentials and OTP! Not Okta.
 
+To rerun a test, copy and paste the rerun.json in the prompt when asked. It will ignore the base_url, instead replacing it with the environment you selected.
