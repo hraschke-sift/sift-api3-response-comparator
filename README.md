@@ -125,5 +125,5 @@ Please note, the `runs/` and `venv/` directories are generated during the use of
 Initial version. Known bugs:
 - in non-production environments, we always get 401s
 
-### [0.1.0] - 2024-04-08
+### [0.1.0] - 2024-04-09
 Bug fix for 401s in other environments. Now uses environment-specific auth.
