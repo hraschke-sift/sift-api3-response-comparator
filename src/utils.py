@@ -3,6 +3,7 @@ import json
 import uuid
 from datetime import datetime
 from deepdiff import DeepDiff
+from deepdiff.model import PrettyOrderedSet
 
 def load_json_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -15,6 +16,15 @@ def create_run_directory(base_path, env):
     dir_path = os.path.join(base_path, f"{env}_{date_str}_{run_id}")
     os.makedirs(dir_path, exist_ok=True)
     return dir_path
+
+def get_url_from_env(env):
+    url_options = {
+        'dev': 'https://localhost:5323',
+        'expr': 'https://experiment-console.sift.com',
+        'stg1': 'https://staging-console.siftscience.com',
+        'prod': 'https://console.siftscience.com'
+    }
+    return url_options.get(env, '')
 
 def update_response_file(test_run_dir, run_order, customer_id, call_string, response_data):
     """
@@ -47,6 +57,17 @@ def update_response_file(test_run_dir, run_order, customer_id, call_string, resp
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
+class CustomJSONEncoder(json.JSONEncoder):
+    """
+    Custom JSON encoder that converts PrettyOrderedSet to list when encoding JSON.
+    Everything else passes through to the base class.
+    Can be extended to handle other custom types as needed.
+    """
+    def default(self, obj):
+        if isinstance(obj, PrettyOrderedSet):
+            return list(obj)  # Convert PrettyOrderedSet to list
+        # Let the base class default method raise the TypeError
+        return json.JSONEncoder.default(self, obj)
 
 def compare_responses(test_run_dir):
     """
@@ -72,7 +93,7 @@ def compare_responses(test_run_dir):
 
     # Write the comparison results to results.json.
     with open(results_path, 'w', encoding='utf-8') as results_file:
-        json.dump(diff, results_file, indent=4, ensure_ascii=False)
+        json.dump(diff, results_file, indent=4, ensure_ascii=False, cls=CustomJSONEncoder)
 
     if diff:
         print("Differences found. See results.json for details.")

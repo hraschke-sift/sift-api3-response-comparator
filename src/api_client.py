@@ -1,7 +1,7 @@
 import requests
 from auth import get_auth_token
 
-def make_api_call(url, method, headers=None, body=None, base_url='', auth_endpoint='https://api3.siftscience.com'):
+def make_api_call(url, method, headers=None, body=None, base_url='', auth_endpoint='https://console.sift.com'):
     # Include the bearer token in headers
     token = get_auth_token(auth_endpoint)
     if not headers:

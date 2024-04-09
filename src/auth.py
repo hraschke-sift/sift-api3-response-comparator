@@ -3,6 +3,10 @@ import requests
 import yaml
 from getpass import getpass
 
+# TODO(henry) - this currently writes and reads from the same file for
+# every environment. Figure out how it works in the ruby client and mimic
+# that behavior.
+
 CONF_FILE = os.path.expanduser('~/.api3_client.yaml')
 
 def read_conf():

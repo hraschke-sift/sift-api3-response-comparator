@@ -1,5 +1,6 @@
 import json
 import datetime
+from utils import get_url_from_env
 
 def generate_calls_json(test_run_dir="runs", env="dev"):
     """
@@ -10,13 +11,8 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
     - env: Environment specifier, used to determine the base URL
     """
 
-    url_options = {
-        'dev': 'https://localhost:5323',
-        'expr': 'https://experiment-console.sift.com',
-        'stg1': 'https://staging-console.sift.com',
-        'prod': 'https://console.sift.com'
-    }
-    url = url_options.get(env, '')
+    url = get_url_from_env(env)
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     data_input_method = input("Do you want to paste completed JSON? (y/N): ").lower()
 
@@ -37,6 +33,7 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
           else: 
             valid_json = True
         data['base_url'] = url
+        data['execution_time'] = current_time
 
     else:
         cids = input("Enter customer IDs separated by comma: ").replace(" ", "").split(",")
@@ -53,14 +50,13 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
             calls.append(call)
             more_calls = input("Add another call? (y/N): ").lower() == 'y'
 
-        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data = {
             "execution_time": current_time,
             "base_url": url,
             "cids": cids,
             "calls": calls
         }
-        
+
     calls_file = f"{test_run_dir}/calls.json"
     with open(calls_file, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)

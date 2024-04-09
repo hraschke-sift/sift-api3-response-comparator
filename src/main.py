@@ -1,11 +1,9 @@
 from api_client import make_api_call
 from user_input_client import generate_calls_json
-from utils import create_run_directory, load_json_file, update_response_file, compare_responses
+from utils import create_run_directory, load_json_file, update_response_file, compare_responses, get_url_from_env
 import os
 
-auth_endpoint = "https://api3.siftscience.com"
-
-def execute_api_calls(run_order, test_run_dir='runs/'):
+def execute_api_calls(run_order, test_run_dir='runs/', auth_endpoint='https://console.sift.com'):
     calls_config = load_json_file(f"{test_run_dir}/calls.json")
     base_url = calls_config['base_url']
     cids = calls_config['cids']
@@ -17,7 +15,8 @@ def execute_api_calls(run_order, test_run_dir='runs/'):
             url = f"/v3/accounts/{cid}/{call['url'].lstrip('/')}"  # Ensure no double slashes
             response_data = make_api_call(url, call['method'], body=call.get('body'), base_url=base_url, auth_endpoint=auth_endpoint)
 
-            call_string = call['url'].split('?')[0]
+            call_index = calls.index(call)
+            call_string = f"{str(call_index)}_{call['url'].split('?')[0]}"
 
             # Save response data
             if response_data:
@@ -49,7 +48,7 @@ def main():
 
     # Execute API calls for "after"
     print("Executing 'after' API calls...")
-    execute_api_calls("after", test_run_dir)
+    execute_api_calls("after", test_run_dir, get_url_from_env(env))
 
     # Compare the results
     print("Comparing 'before' and 'after' API calls...")
