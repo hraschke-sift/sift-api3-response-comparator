@@ -83,7 +83,7 @@ def get_auth_token(endpoint, is_retry=False):
 
     if auth_token and refresh_token:
         if is_retry:
-          return refresh_auth(refresh_token, endpoint)
+            return refresh_auth(refresh_token, endpoint)
         return auth_token
     else:
         return password_auth(endpoint)

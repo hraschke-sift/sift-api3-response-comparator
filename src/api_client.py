@@ -1,7 +1,9 @@
 import requests
+import time
 from auth import get_auth_token
 
 max_retries = 3
+
 
 def make_api_call(
     url,
@@ -29,4 +31,12 @@ def make_api_call(
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
+        # If the response is a 401, no retry (user doesn't have access)
+        if response.status_code == 401:
+            return None
+        # if the response is a 404, no retry (resource doesn't exist)
+        if response.status_code == 404:
+            return None
+        # Otherwise, retry the request if it failed
+        time.sleep(2)
         return make_api_call(retry + 1) if retry < max_retries else None
