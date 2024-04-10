@@ -2,6 +2,7 @@ import os
 import json
 import math
 from datetime import datetime
+from db import get_responses, set_difference
 from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
 
@@ -29,40 +30,6 @@ def get_url_from_env(env):
     return url_options.get(env, "")
 
 
-def update_response_file(
-    test_run_dir, run_order, customer_id, call_string, response_data
-):
-    """
-    Updates the before.json or after.json file with the new response data for a given customer_id.
-
-    Parameters:
-    - run_order: 'before' or 'after', indicating which file to update.
-    - customer_id: The customer ID for which the response is associated.
-    - response_data: The JSON response data to append.
-    - base_path: Base directory where the runs are stored.
-    """
-    # Define the path to the appropriate file based on the run order.
-    file_path = os.path.join(test_run_dir, f"{run_order}.json")
-
-    # Initialize an empty dictionary to hold our data.
-    data = {}
-
-    # If the file already exists, load its contents into the data dictionary.
-    if os.path.exists(file_path):
-        with open(file_path, "r", encoding="utf-8") as file:
-            data = json.load(file)
-
-    # Check if there's an entry for the given customer_id, append if there is, or create a new one if not.
-    if customer_id in data:
-        data[customer_id][call_string] = response_data
-    else:
-        data[customer_id] = {call_string: response_data}
-
-    # Write the updated data back to the file.
-    with open(file_path, "w", encoding="utf-8") as file:
-        json.dump(data, file, indent=4, ensure_ascii=False)
-
-
 class CustomJSONEncoder(json.JSONEncoder):
     """
     Custom JSON encoder that converts PrettyOrderedSet to list when encoding JSON.
@@ -77,38 +44,30 @@ class CustomJSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def compare_responses(test_run_dir):
-    """
-    Compares responses in before.json and after.json within a specific run directory,
-    and writes the differences to results.json in the same directory.
+def compare_responses(test_run_dir, db_path, cids, endpoints):
+    for cid in cids:
+        for endpoint in endpoints:
+            print("Comparing responses for customer ID:", cid, "Endpoint:", endpoint)
+            response_before, response_after = get_responses(db_path, cid, endpoint)
 
-    Parameters:
-    - run_path: The path to the specific run directory.
-    """
-    before_path = os.path.join(test_run_dir, "before.json")
-    after_path = os.path.join(test_run_dir, "after.json")
-    results_path = os.path.join(test_run_dir, "results.json")
+            diff = "Missing response data"
 
-    # Load the data from before and after JSON files.
-    with open(before_path, "r", encoding="utf-8") as before_file:
-        before_data = json.load(before_file)
+            if response_before and response_after:
+                diff = DeepDiff(
+                    response_before,
+                    response_after,
+                    ignore_order=True,
+                    exclude_paths={"root['request_id']"},
+                )
 
-    with open(after_path, "r", encoding="utf-8") as after_file:
-        after_data = json.load(after_file)
+                if not diff:
+                    diff = "None"
+                else:
+                    diff = json.dumps(diff, cls=CustomJSONEncoder)
+                    print("Differences found.")
 
-    # Compare the two sets of data.
-    diff = DeepDiff(before_data, after_data, ignore_order=True).to_dict()
-
-    # Write the comparison results to results.json.
-    with open(results_path, "w", encoding="utf-8") as results_file:
-        json.dump(
-            diff, results_file, indent=4, ensure_ascii=False, cls=CustomJSONEncoder
-        )
-
-    if diff:
-        print("Differences found. See results.json for details.")
-    else:
-        print("No differences found between before.json and after.json.")
+            set_difference(db_path, cid, endpoint, diff)
+            record_result(test_run_dir, cid, endpoint, diff)
 
 
 def report_run_duration(test_run_dir):
@@ -124,3 +83,20 @@ def report_run_duration(test_run_dir):
 
     with open(f"{test_run_dir}/config.json", "w") as file:
         json.dump(data, file, indent=4)
+
+
+def record_result(test_run_dir, cid, endpoint, result):
+    # check if the results.json exists
+    results_file = os.path.join(test_run_dir, "results.json")
+    if os.path.exists(results_file):
+        with open(results_file, "r") as file:
+            results = json.load(file)
+    else:
+        results = {}
+
+    # update the results with the new result
+    results[f"{cid}_{endpoint}"] = result
+
+    # write the updated results back to the file
+    with open(results_file, "w") as file:
+        json.dump(results, file, indent=4)

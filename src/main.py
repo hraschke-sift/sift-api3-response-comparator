@@ -3,17 +3,16 @@ from user_input_client import generate_config_json
 from utils import (
     create_run_directory,
     load_json_file,
-    update_response_file,
     compare_responses,
     report_run_duration,
 )
 
+from db import create_database, insert_or_update_response
 
-def execute_api_calls(run_order, test_run_dir="runs/", env="prod"):
-    config_config = load_json_file(f"{test_run_dir}/config.json")
-    base_url = config_config["base_url"]
-    cids = config_config["cids"]
-    calls = config_config["calls"]
+
+def execute_api_calls(
+    cids, calls, base_url, run_order, test_run_dir="runs/", env="prod", db_path="responses.db"
+):
 
     total_calls = len(cids) * len(calls)
 
@@ -41,16 +40,16 @@ def execute_api_calls(run_order, test_run_dir="runs/", env="prod"):
 
             # Save response data
             if response_data:
-                update_response_file(
-                    test_run_dir, run_order, cid, call_string, response_data
+                insert_or_update_response(
+                    db_path, cid, call_string, response_data, run_order == "before"
                 )
             else:
-                update_response_file(
-                    test_run_dir,
-                    run_order,
+                insert_or_update_response(
+                    db_path,
                     cid,
                     call_string,
                     {"error": "API call failed"},
+                    run_order == "before",
                 )
 
     print(f"API calls for {run_order} completed and stored in {test_run_dir}.")
@@ -68,26 +67,35 @@ def main():
     test_run_dir = create_run_directory("runs/", env)
     print(f"Test run directory created at {test_run_dir}")
 
+    # Create DB
+    db_path = "responses.db"
+    create_database(db_path)
+
     # Generate config.json via CLI prompts
     generate_config_json(test_run_dir, env)
     input("Files generated. Press Enter to execute API calls...")
 
+    config_file = load_json_file(f"{test_run_dir}/config.json")
+    base_url = config_file["base_url"]
+    cids = config_file["cids"]
+    calls = config_file["calls"]
+
     # Execute API calls for "before"
     print("Executing 'before' API calls...")
-    execute_api_calls("before", test_run_dir, env)
+    execute_api_calls(cids, calls, base_url, "before", test_run_dir, env, db_path)
 
     # Pause for database migration
     input(
-        "Please complete the database migration now. Press Enter to continue once done..."
+        "Please complete the change to be validated now. Press Enter to continue once done..."
     )
 
     # Execute API calls for "after"
     print("Executing 'after' API calls...")
-    execute_api_calls("after", test_run_dir, env)
+    execute_api_calls(cids, calls, base_url, "after", test_run_dir, env, db_path)
 
     # Compare the results
     print("Comparing 'before' and 'after' API calls...")
-    compare_responses(test_run_dir)
+    compare_responses(test_run_dir, db_path, )
 
     # Report duration and record end time to config.json
     report_run_duration(test_run_dir)
