@@ -85,13 +85,13 @@ def password_auth(env):
         return password_auth(env)
 
 
-def get_auth_token(env, is_retry=False):
+def get_auth_token(env, refresh=False):
     conf = read_conf(env)
     auth_token = conf.get("auth_token")
     refresh_token = conf.get("refresh_token")
 
     if auth_token and refresh_token:
-        if is_retry:
+        if refresh:
             return refresh_auth(refresh_token, env)
         return auth_token
     else:

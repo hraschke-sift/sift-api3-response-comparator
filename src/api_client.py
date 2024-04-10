@@ -15,13 +15,15 @@ def make_api_call(
     retry=0,
 ):
     # Include the bearer token in headers
-    token = get_auth_token(env, retry > 0)
+    token = get_auth_token(env)
     if not headers:
         headers = {}
     headers["Authorization"] = f"Bearer {token}"
     headers["Content-Type"] = "application/json"
 
     full_url = f"{base_url}{url}"
+    print("Calling API:", full_url)
+    print("")
 
     try:
         if method == "GET":
@@ -35,6 +37,17 @@ def make_api_call(
         # if the response is a 404, no retry (resource doesn't exist)
         if response.status_code == 404:
             return None
+
+        # if the response is a 401, refresh the auth token and retry
+        if response.status_code == 401:
+            print("Refreshing auth token")
+            get_auth_token(env, refresh=True)
+            return (
+                make_api_call(url, method, headers, body, base_url, env, retry + 1)
+                if retry < max_retries
+                else None
+            )
+
         # Otherwise, retry the request if it failed
         time.sleep(2)
         return (
