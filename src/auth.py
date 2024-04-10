@@ -59,11 +59,11 @@ def password_auth(env):
     username = os.getenv("USERNAME")
     password = os.getenv("PASSWORD")
     if not username or not password:
-      # If not, prompt user for username and password
-      username = input("Username: ")
-      password = getpass("Password: ")
-    else :
-      print(f"Using username and password {username} from environment variable")
+        # If not, prompt user for username and password
+        username = input("Username: ")
+        password = getpass("Password: ")
+    else:
+        print(f"Using username and password {username} from environment variable")
     # Ask for TOTP token
     totp = getpass("Token: ")
 

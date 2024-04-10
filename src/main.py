@@ -92,5 +92,6 @@ def main():
     # Report duration and record end time to config.json
     report_run_duration(test_run_dir)
 
+
 if __name__ == "__main__":
     main()
