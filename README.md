@@ -110,7 +110,6 @@ sift-api3-response-comparator/
 │ ├── main.py # Main script for orchestrating the validation process
 │ └── utils.py # Utility functions, including file operations and comparison logic
 │
-├── db/ # Directory for storing db entries
 ├── runs/ # Directory for storing test run configs and results
 ├── venv/ # Virtual environment for the project (not tracked by Git)
 │
@@ -119,9 +118,7 @@ sift-api3-response-comparator/
 └── README.md
 ```
 
-## Notes
-
-Known issue: You can't run two tests at once, as they will write over one another in the same db. If you need to do this, please change the db_path in the code somehow.
+## Notes / Known Issues
 
 ## Changelog
 ### [0.0.1] - 2024-04-08

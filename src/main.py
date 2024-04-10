@@ -72,7 +72,7 @@ def main():
     c_print.blue(f"Test run directory created at {test_run_dir}")
 
     # Create DB
-    db_path = "db/responses.db"
+    db_path = f"{test_run_dir}/responses.db"
     create_database(db_path)
 
     # Generate config.json via CLI prompts
@@ -97,7 +97,7 @@ def main():
 
     # Execute API calls for "after"
     c_print.blue("Executing 'after' API calls...")
-    execute_api_calls(cids, calls, base_url, "after", test_run_dir, env, db_path)
+    execute_api_calls(cids, calls, base_url, "after", env, db_path)
 
     # Compare the results
     c_print.blue("Comparing 'before' and 'after' API calls...")
