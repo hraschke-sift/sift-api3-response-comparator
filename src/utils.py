@@ -62,7 +62,7 @@ def compare_responses(test_run_dir, db_path, cids, endpoints):
                 )
 
                 if not diff:
-                    diff = "No changes detected."
+                    diff = "nil"
                 else:
                     diff = json.dumps(diff, cls=CustomJSONEncoder)
                     c_print.warn("Differences found.")
@@ -97,7 +97,8 @@ def record_result(test_run_dir, cid, endpoint, result):
         results = {}
 
     # update the results with the new result
-    results[f"{cid}_{endpoint}"] = result
+    if result == "nil":
+      results[f"{cid}_{endpoint}"] = json.loads(result)
 
     # write the updated results back to the file
     with open(results_file, "w") as file:
