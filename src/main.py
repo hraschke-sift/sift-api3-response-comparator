@@ -27,9 +27,8 @@ def execute_api_calls(
             # Construct the full API endpoint URL
             url = f"/v3/accounts/{cid}/{call['url'].lstrip('/')}"  # Ensure no double slashes
             call_index = calls.index(call)
-
             c_print.time(
-                f"Making request {(cid_index * len(cids)) + (call_index + 1)} of {total_calls} API: {url}"
+                f"Making request {(cid_index * len(calls)) + (call_index + 1)} of {total_calls} API: {url}"
             )
 
             response_data = make_api_call(
