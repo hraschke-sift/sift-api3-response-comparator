@@ -111,7 +111,7 @@ sift-api3-response-comparator/
 │ └── utils.py # Utility functions, including file operations and comparison logic
 │
 ├── db/ # Directory for storing db entries
-│
+├── runs/ # Directory for storing test run configs and results
 ├── venv/ # Virtual environment for the project (not tracked by Git)
 │
 ├── .gitignore
@@ -135,3 +135,5 @@ Initial version. Known bugs:
 
 ### [0.2.0] - 2024-09-10
 - Added sqlite3 support to address performance issues
+- Bug fixes
+- Added color-coded command line outputs
