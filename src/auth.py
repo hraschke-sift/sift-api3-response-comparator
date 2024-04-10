@@ -64,7 +64,9 @@ def password_auth(env):
         username = input("Username: ")
         password = getpass("Password: ")
     else:
-        c_print.cyan(f"Using username and password {username} from environment variable")
+        c_print.cyan(
+            f"Using username and password {username} from environment variable"
+        )
     # Ask for TOTP token
     totp = getpass("Token: ")
 

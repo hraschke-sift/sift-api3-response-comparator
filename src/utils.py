@@ -48,7 +48,9 @@ class CustomJSONEncoder(json.JSONEncoder):
 def compare_responses(test_run_dir, db_path, cids, endpoints):
     for cid in cids:
         for endpoint in endpoints:
-            c_print.time("Comparing responses for customer ID:", cid, "Endpoint:", endpoint)
+            c_print.time(
+                "Comparing responses for customer ID:", cid, "Endpoint:", endpoint
+            )
             response_before, response_after = get_responses(db_path, cid, endpoint)
 
             diff = "Missing response data"
@@ -98,7 +100,7 @@ def record_result(test_run_dir, cid, endpoint, result):
 
     # update the results with the new result
     if result == "nil":
-      results[f"{cid}_{endpoint}"] = json.loads(result)
+        results[f"{cid}_{endpoint}"] = json.loads(result)
 
     # write the updated results back to the file
     with open(results_file, "w") as file:
