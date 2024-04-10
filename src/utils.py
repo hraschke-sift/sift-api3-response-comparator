@@ -111,7 +111,7 @@ def compare_responses(test_run_dir):
         print("No differences found between before.json and after.json.")
 
 def report_run_duration(test_run_dir):
-    with open(f"{test_run_dir}/calls.json", "r") as file:
+    with open(f"{test_run_dir}/config.json", "r") as file:
         data = json.load(file)
         data["run_end"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -119,5 +119,5 @@ def report_run_duration(test_run_dir):
 
     print(f"Test run completed in {run_duration}")
 
-    with open(f"{test_run_dir}/calls.json", "w") as file:
+    with open(f"{test_run_dir}/config.json", "w") as file:
         json.dump(data, file, indent=4)

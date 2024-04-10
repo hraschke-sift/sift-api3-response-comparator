@@ -1,5 +1,5 @@
 from api_client import make_api_call
-from user_input_client import generate_calls_json
+from user_input_client import generate_config_json
 from utils import (
     create_run_directory,
     load_json_file,
@@ -10,10 +10,10 @@ from utils import (
 
 
 def execute_api_calls(run_order, test_run_dir="runs/", env="prod"):
-    calls_config = load_json_file(f"{test_run_dir}/calls.json")
-    base_url = calls_config["base_url"]
-    cids = calls_config["cids"]
-    calls = calls_config["calls"]
+    config_config = load_json_file(f"{test_run_dir}/config.json")
+    base_url = config_config["base_url"]
+    cids = config_config["cids"]
+    calls = config_config["calls"]
 
     total_calls = len(cids) * len(calls)
 
@@ -68,8 +68,8 @@ def main():
     test_run_dir = create_run_directory("runs/", env)
     print(f"Test run directory created at {test_run_dir}")
 
-    # Generate calls.json via CLI prompts
-    generate_calls_json(test_run_dir, env)
+    # Generate config.json via CLI prompts
+    generate_config_json(test_run_dir, env)
     input("Files generated. Press Enter to execute API calls...")
 
     # Execute API calls for "before"
@@ -89,7 +89,7 @@ def main():
     print("Comparing 'before' and 'after' API calls...")
     compare_responses(test_run_dir)
 
-    # Report duration and record end time to calls.json
+    # Report duration and record end time to config.json
     report_run_duration(test_run_dir)
 
 if __name__ == "__main__":

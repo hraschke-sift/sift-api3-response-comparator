@@ -3,12 +3,12 @@ import datetime
 from utils import get_url_from_env
 
 
-def generate_calls_json(test_run_dir="runs", env="dev"):
+def generate_config_json(test_run_dir="runs", env="dev"):
     """
-    Generates a calls.json file based on user input.
+    Generates a config.json file based on user input.
 
     Parameters:
-    - output: Output file path for calls.json
+    - output: Output file path for config.json
     - env: Environment specifier, used to determine the base URL
     """
 
@@ -66,11 +66,11 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
             "calls": calls,
         }
 
-    calls_file = f"{test_run_dir}/calls.json"
-    with open(calls_file, "w", encoding="utf-8") as f:
+    config_file = f"{test_run_dir}/config.json"
+    with open(config_file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-    print(f"calls.json has been saved to {calls_file}")
+    print(f"config.json has been saved to {config_file}")
 
     rerun_file = f"{test_run_dir}/rerun.json"
     with open(rerun_file, "w", encoding="utf-8") as f:
