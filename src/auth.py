@@ -3,6 +3,7 @@ import requests
 import yaml
 from getpass import getpass
 from utils import get_url_from_env
+from dotenv import load_dotenv
 
 # TODO(henry) - this currently writes and reads from the same file for
 # every environment. Figure out how it works in the ruby client and mimic
@@ -53,11 +54,20 @@ def refresh_auth(refresh_token, env):
 
 
 def password_auth(env):
-    endpoint = get_url_from_env(env)
-    username = input("Username: ")
-    password = getpass("Password: ")
+    # Check if username and password are in environment variables
+    load_dotenv()
+    username = os.getenv("USERNAME")
+    password = os.getenv("PASSWORD")
+    if not username or not password:
+      # If not, prompt user for username and password
+      username = input("Username: ")
+      password = getpass("Password: ")
+    else :
+      print(f"Using username and password {username} from environment variable")
+    # Ask for TOTP token
     totp = getpass("Token: ")
 
+    endpoint = get_url_from_env(env)
     response = requests.post(
         f"{endpoint}/oauth2/token",
         data={

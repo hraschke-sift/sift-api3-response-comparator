@@ -12,6 +12,7 @@ ordered-set==4.1.0
 packaging==24.0
 pathspec==0.12.1
 platformdirs==4.2.0
+python-dotenv==1.0.1
 PyYAML==6.0.1
 requests==2.31.0
 six @ file:///AppleInternal/Library/BuildRoots/9dd5efe2-7fad-11ee-b588-aa530c46a9ea/Library/Caches/com.apple.xbs/Sources/python3/six-1.15.0-py2.py3-none-any.whl
