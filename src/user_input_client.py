@@ -15,32 +15,26 @@ def generate_config_json(test_run_dir="runs", env="dev"):
     url = get_url_from_env(env)
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    data_input_method = input("Do you want to paste completed JSON? (y/N): ").lower()
+    data_input_method = input("Do you want load an existing JSON config file? (y/N): ").lower()
 
     if data_input_method == "y":
         valid_json = False
         while not valid_json:
-            data = json.loads(input("Paste your JSON here: "))
+          input(f"Place the completed config.json file in {test_run_dir}. Press return when ready... ")
+          config_file = f"{test_run_dir}/config.json"
+          with open(config_file, "r", encoding="utf-8") as f:
+              data = json.load(f)
+          try:
+            if isinstance(data, dict):
+              if isinstance(data.get("cids"), list) and isinstance(data.get("calls"), list):
+                valid_json = True
+              else:
+                print("Ensure config.json contains 'cids' and 'calls'.")
+          except:
+            print("Invalid JSON file. Please try again.")
 
-            # Validate the data JSON
-            try:
-                if not isinstance(data, dict):
-                    print(
-                        "Invalid data JSON: Must be an object. Make sure it is a single line before posting."
-                    )
-                elif not isinstance(data.get("base_url"), str):
-                    print("Invalid data JSON: 'base_url' must be a string")
-                elif not isinstance(data.get("cids"), list):
-                    print("Invalid data JSON: 'cids' must be a list")
-                elif not isinstance(data.get("calls"), list):
-                    print("Invalid data JSON: 'calls' must be a list")
-                else:
-                    valid_json = True
-            except json.JSONDecodeError:
-                print("Invalid JSON format. Please try again.")
-
-            data["base_url"] = url
-            data["run_start"] = current_time
+        data["base_url"] = url
+        data["run_start"] = current_time
 
     else:
         cids = (
@@ -71,7 +65,3 @@ def generate_config_json(test_run_dir="runs", env="dev"):
         json.dump(data, f, ensure_ascii=False, indent=4)
 
     print(f"config.json has been saved to {config_file}")
-
-    rerun_file = f"{test_run_dir}/rerun.json"
-    with open(rerun_file, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
