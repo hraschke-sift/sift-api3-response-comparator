@@ -1,6 +1,7 @@
 import requests
 import time
 from auth import get_auth_token
+from output import c_print
 
 max_retries = 2
 
@@ -31,14 +32,14 @@ def make_api_call(
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
+        c_print.fail(f"Request failed: {e}")
         # if the response is a 404, no retry (resource doesn't exist)
         if response.status_code == 404:
             return None
 
         # if the response is a 401, refresh the auth token and retry
         if response.status_code == 401:
-            print("Refreshing auth token")
+            c_print.warn("Refreshing auth token")
             get_auth_token(env, refresh=True)
             return (
                 make_api_call(url, method, headers, body, base_url, env, retry + 1)

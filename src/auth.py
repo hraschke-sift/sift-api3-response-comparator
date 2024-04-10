@@ -1,6 +1,7 @@
 import os
 import requests
 import yaml
+from output import c_print
 from getpass import getpass
 from utils import get_url_from_env
 from dotenv import load_dotenv
@@ -42,14 +43,14 @@ def refresh_auth(refresh_token, env):
         },
     )
     if response.status_code < 300:
-        print("Refreshed auth token")
+        c_print.cyan("Refreshed auth token")
         data = response.json()
         auth_token = data["access_token"]
         refresh_token = data.get("refresh_token")
         write_conf(env, {"auth_token": auth_token, "refresh_token": refresh_token})
         return auth_token
     else:
-        print("Refresh token has expired, please authenticate again.")
+        c_print.warn("Refresh token has expired, please authenticate again.")
         return password_auth(env)
 
 
@@ -63,7 +64,7 @@ def password_auth(env):
         username = input("Username: ")
         password = getpass("Password: ")
     else:
-        print(f"Using username and password {username} from environment variable")
+        c_print.cyan(f"Using username and password {username} from environment variable")
     # Ask for TOTP token
     totp = getpass("Token: ")
 
@@ -80,7 +81,7 @@ def password_auth(env):
         },
     )
     if response.status_code < 300:
-        print("Authentication successful")
+        c_print.ok("Authentication successful")
         data = response.json()
         write_conf(
             env,
@@ -91,7 +92,7 @@ def password_auth(env):
         )
         return data["access_token"]
     else:
-        print("Failed to authenticate")
+        c_print.fail("Failed to authenticate")
         return password_auth(env)
 
 

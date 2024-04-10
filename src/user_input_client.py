@@ -1,5 +1,6 @@
 import json
 import datetime
+from output import c_print
 from utils import get_url_from_env
 
 
@@ -35,9 +36,9 @@ def generate_config_json(test_run_dir="runs", env="dev"):
                     ):
                         valid_json = True
                     else:
-                        print("Ensure config.json contains 'cids' and 'calls'.")
+                        c_print.warn("Ensure config.json contains 'cids' and 'calls'.")
             except:
-                print("Invalid JSON file. Please try again.")
+                c_print.warn("Invalid JSON file. Please try again.")
 
         data["base_url"] = url
         data["run_start"] = current_time
@@ -70,5 +71,5 @@ def generate_config_json(test_run_dir="runs", env="dev"):
     with open(config_file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-    print(f"config.json has been saved to {config_file}")
+    c_print.ok(f"config.json has been saved to {config_file}")
     print("")

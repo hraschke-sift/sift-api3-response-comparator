@@ -6,7 +6,7 @@ from utils import (
     compare_responses,
     report_run_duration,
 )
-
+from output import c_print
 from db import create_database, insert_or_update_response
 
 
@@ -29,10 +29,9 @@ def execute_api_calls(
             url = f"/v3/accounts/{cid}/{call['url'].lstrip('/')}"  # Ensure no double slashes
             call_index = calls.index(call)
 
-            print(
+            c_print.time(
                 f"Making request {(cid_index * len(cids)) + (call_index + 1)} of {total_calls} API: {url}"
             )
-            print("")
 
             response_data = make_api_call(
                 url,
@@ -58,7 +57,7 @@ def execute_api_calls(
                     run_order == "before",
                 )
 
-    print(f"API calls for {run_order} completed.")
+    c_print.ok(f"API calls for {run_order} completed.")
     print("")
 
 
@@ -72,7 +71,7 @@ def main():
         ).lower()
 
     test_run_dir = create_run_directory("runs/", env)
-    print(f"Test run directory created at {test_run_dir}")
+    c_print.blue(f"Test run directory created at {test_run_dir}")
 
     # Create DB
     db_path = "db/responses.db"
@@ -89,7 +88,7 @@ def main():
     calls = config_file["calls"]
 
     # Execute API calls for "before"
-    print("Executing 'before' API calls...")
+    c_print.blue("Executing 'before' API calls...")
     execute_api_calls(cids, calls, base_url, "before", test_run_dir, env, db_path)
 
     # Pause for database migration
@@ -99,11 +98,11 @@ def main():
     print("")
 
     # Execute API calls for "after"
-    print("Executing 'after' API calls...")
+    c_print.blue("Executing 'after' API calls...")
     execute_api_calls(cids, calls, base_url, "after", test_run_dir, env, db_path)
 
     # Compare the results
-    print("Comparing 'before' and 'after' API calls...")
+    c_print.blue("Comparing 'before' and 'after' API calls...")
     call_strings_array = [
         f"{str(calls.index(call))}_{call['url'].split('?')[0]}" for call in calls
     ]

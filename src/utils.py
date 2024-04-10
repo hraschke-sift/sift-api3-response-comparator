@@ -2,6 +2,7 @@ import os
 import json
 import math
 from datetime import datetime
+from output import c_print
 from db import get_responses, set_difference
 from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
@@ -47,7 +48,7 @@ class CustomJSONEncoder(json.JSONEncoder):
 def compare_responses(test_run_dir, db_path, cids, endpoints):
     for cid in cids:
         for endpoint in endpoints:
-            print("Comparing responses for customer ID:", cid, "Endpoint:", endpoint)
+            c_print.time("Comparing responses for customer ID:", cid, "Endpoint:", endpoint)
             response_before, response_after = get_responses(db_path, cid, endpoint)
 
             diff = "Missing response data"
@@ -64,11 +65,11 @@ def compare_responses(test_run_dir, db_path, cids, endpoints):
                     diff = "No changes detected."
                 else:
                     diff = json.dumps(diff, cls=CustomJSONEncoder)
-                    print("Differences found.")
+                    c_print.warn("Differences found.")
 
             set_difference(db_path, cid, endpoint, diff)
             record_result(test_run_dir, cid, endpoint, diff)
-            print(f"See the complete results in {test_run_dir}/results.json")
+            c_print.blue(f"See the complete results in {test_run_dir}/results.json")
 
 
 def report_run_duration(test_run_dir):
@@ -80,7 +81,7 @@ def report_run_duration(test_run_dir):
         data["run_end"], "%Y-%m-%d %H:%M:%S"
     ) - datetime.strptime(data["run_start"], "%Y-%m-%d %H:%M:%S")
 
-    print(f"Test run completed in {run_duration}")
+    c_print.ok(f"Test run completed in {run_duration}")
 
     with open(f"{test_run_dir}/config.json", "w") as file:
         json.dump(data, file, indent=4)
