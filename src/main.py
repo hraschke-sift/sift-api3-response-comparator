@@ -15,10 +15,20 @@ def execute_api_calls(run_order, test_run_dir="runs/", env="prod"):
     cids = calls_config["cids"]
     calls = calls_config["calls"]
 
+    total_calls = len(cids) * len(calls)
+
     for cid in cids:
+        cid_index = cids.index(cid)
         for call in calls:
             # Construct the full API endpoint URL
             url = f"/v3/accounts/{cid}/{call['url'].lstrip('/')}"  # Ensure no double slashes
+            call_index = calls.index(call)
+
+            print(
+                f"Making request {(cid_index + 1) * (call_index + 1)} of {total_calls} API: {url}"
+            )
+            print("")
+
             response_data = make_api_call(
                 url,
                 call["method"],
@@ -27,7 +37,6 @@ def execute_api_calls(run_order, test_run_dir="runs/", env="prod"):
                 env=env,
             )
 
-            call_index = calls.index(call)
             call_string = f"{str(call_index)}_{call['url'].split('?')[0]}"
 
             # Save response data

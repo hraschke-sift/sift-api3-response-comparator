@@ -22,8 +22,6 @@ def make_api_call(
     headers["Content-Type"] = "application/json"
 
     full_url = f"{base_url}{url}"
-    print("Calling API:", full_url)
-    print("")
 
     try:
         if method == "GET":
