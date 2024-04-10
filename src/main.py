@@ -15,7 +15,6 @@ def execute_api_calls(
     calls,
     base_url,
     run_order,
-    test_run_dir="runs/",
     env="prod",
     db_path="db/responses.db",
 ):
@@ -89,7 +88,7 @@ def main():
 
     # Execute API calls for "before"
     c_print.blue("Executing 'before' API calls...")
-    execute_api_calls(cids, calls, base_url, "before", test_run_dir, env, db_path)
+    execute_api_calls(cids, calls, base_url, "before", env, db_path)
 
     # Pause for database migration
     input(
