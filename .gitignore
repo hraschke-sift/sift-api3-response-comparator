@@ -1,4 +1,5 @@
 venv/
+runs/
 db/*.db
 *.pyc
 __pycache__/
