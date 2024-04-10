@@ -119,6 +119,10 @@ sift-api3-response-comparator/
 └── README.md
 ```
 
+## Notes
+
+Known issue: You can't run two tests at once, as they will write over one another in the same db. If you need to do this, please change the db_path in the code somehow.
+
 ## Changelog
 ### [0.0.1] - 2024-04-08
 Initial version. Known bugs:
