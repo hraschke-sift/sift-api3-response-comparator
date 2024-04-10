@@ -61,6 +61,7 @@ def main():
 
     # Generate calls.json via CLI prompts
     generate_calls_json(test_run_dir, env)
+    input("Files generated. Press Enter to execute API calls...")
 
     # Execute API calls for "before"
     print("Executing 'before' API calls...")
