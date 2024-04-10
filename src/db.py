@@ -1,7 +1,8 @@
 import sqlite3
+import json
 
 
-def create_database(db_path="responses.db"):
+def create_database(db_path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
@@ -23,6 +24,10 @@ def create_database(db_path="responses.db"):
 def insert_or_update_response(db_path, customer_id, endpoint, response, before=True):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
+
+    # Serialize response to JSON if it's a dictionary
+    if isinstance(response, dict):
+        response = json.dumps(response)
 
     # Check if the row exists
     cursor.execute(

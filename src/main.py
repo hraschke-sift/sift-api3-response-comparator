@@ -11,7 +11,13 @@ from db import create_database, insert_or_update_response
 
 
 def execute_api_calls(
-    cids, calls, base_url, run_order, test_run_dir="runs/", env="prod", db_path="responses.db"
+    cids,
+    calls,
+    base_url,
+    run_order,
+    test_run_dir="runs/",
+    env="prod",
+    db_path="db/responses.db",
 ):
 
     total_calls = len(cids) * len(calls)
@@ -24,7 +30,7 @@ def execute_api_calls(
             call_index = calls.index(call)
 
             print(
-                f"Making request {(cid_index + 1) * (call_index + 1)} of {total_calls} API: {url}"
+                f"Making request {(cid_index * len(cids)) + (call_index + 1)} of {total_calls} API: {url}"
             )
             print("")
 
@@ -52,7 +58,8 @@ def execute_api_calls(
                     run_order == "before",
                 )
 
-    print(f"API calls for {run_order} completed and stored in {test_run_dir}.")
+    print(f"API calls for {run_order} completed.")
+    print("")
 
 
 def main():
@@ -68,12 +75,13 @@ def main():
     print(f"Test run directory created at {test_run_dir}")
 
     # Create DB
-    db_path = "responses.db"
+    db_path = "db/responses.db"
     create_database(db_path)
 
     # Generate config.json via CLI prompts
     generate_config_json(test_run_dir, env)
     input("Files generated. Press Enter to execute API calls...")
+    print("")
 
     config_file = load_json_file(f"{test_run_dir}/config.json")
     base_url = config_file["base_url"]
@@ -88,6 +96,7 @@ def main():
     input(
         "Please complete the change to be validated now. Press Enter to continue once done..."
     )
+    print("")
 
     # Execute API calls for "after"
     print("Executing 'after' API calls...")
@@ -95,7 +104,10 @@ def main():
 
     # Compare the results
     print("Comparing 'before' and 'after' API calls...")
-    compare_responses(test_run_dir, db_path, )
+    call_strings_array = [
+        f"{str(calls.index(call))}_{call['url'].split('?')[0]}" for call in calls
+    ]
+    compare_responses(test_run_dir, db_path, cids, call_strings_array)
 
     # Report duration and record end time to config.json
     report_run_duration(test_run_dir)

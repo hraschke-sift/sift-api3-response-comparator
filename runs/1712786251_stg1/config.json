@@ -1,0 +1,272 @@
+{
+    "execution_time": "2024-04-10 08:01:29",
+    "base_url": "https://staging-console.siftscience.com",
+    "cids": [
+        "54c57697c06fd48799000405",
+        "60aeb07bbe968e78ea29d9d5",
+        "5da8a1994f0c1789dd5a826e",
+        "517195f6c06fd4670b008051",
+        "62ffe9d3980dc259d981eb5e",
+        "62ffe64415ec912f7c94c7a8",
+        "5e41957def0aa956dad5700a",
+        "5af8c1844f0c269f4289bb29",
+        "5a8f507f4f0c42ea22d66f0c",
+        "60f88a09293fb116c8220750",
+        "5ecea9fbef0a3f7a488c0d50",
+        "589cf354e4b054e606d8845b",
+        "4e1a50e172beb95cf1e4ae54",
+        "5e8e233bef0a760715782023"
+    ],
+    "calls": [
+        {
+            "url": "/reporting/bizops/reports",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/dashboards/payment_abuse?abuse_type=payment_abuse&interval_end=1712818799999&interval_start=1710140400000&interval_type=day&time_zone=America%2FLos_Angeles&order_report=orders_order_decisions2",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/dashboards/payment_abuse?abuse_type=payment_abuse&interval_end=1712818799999&interval_start=1681110000000&interval_type=month&time_zone=America%2FLos_Angeles&order_report=orders_order_decisions2",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/dashboards/payment_abuse?abuse_type=payment_abuse&interval_end=1712818799999&interval_start=1704960000000&interval_type=week&time_zone=America%2FLos_Angeles&order_report=orders_order_decisions2",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/dashboards/account_abuse?abuse_type=account_abuse&interval_end=1712818799999&interval_start=1710140400000&interval_type=day&time_zone=America%2FLos_Angeles&account_report=accounts_decisions2",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/dashboards/content_abuse?abuse_type=content_abuse&interval_end=1712818799999&interval_start=1710140400000&interval_type=day&time_zone=America%2FLos_Angeles&content_report=content_user_decisions&content_types=comment%2Clegacy%2Clisting%2Cmessage%2Cpost%2Cprofile%2Creview",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/accounts_decisions2/data?interval_type=day&interval_start=1710140400000&interval_end=1712818799999&abuse_type=account_abuse&time_zone=America%2FLos_Angeles&aggregate_type=ALL_ACCOUNTS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/accounts_decisions2/data?interval_type=hour&interval_start=1710140400000&interval_end=1712818799999&abuse_type=account_abuse&time_zone=America%2FLos_Angeles&aggregate_type=ALL_ACCOUNTS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/decisions_applied2/data?interval_type=hour&entity_type=all&interval_start=1710140400000&interval_end=1712818799999&abuse_type=account_abuse&time_zone=America%2FLos_Angeles&aggregate_type=MANUAL_DECISIONS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/decisions_applied2/data?interval_type=day&entity_type=all&interval_start=1710140400000&interval_end=1712818799999&abuse_type=account_abuse&time_zone=America%2FLos_Angeles&aggregate_type=MANUAL_DECISIONS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_logins/data?interval_type=day&interval_start=1710140400000&interval_end=1712793599999&time_zone=UTC&session_chart_type=SUCCESSFUL_LOGINS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_logins/data?interval_type=day&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&session_chart_type=SUCCESSFUL_LOGINS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_logins/data?interval_type=day&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&session_chart_type=FAILED_LOGINS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_logins/data?interval_type=day&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&session_chart_type=VERIFIED_LOGINS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_logins/data?interval_type=day&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&session_chart_type=BLOCKED_LOGINS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_verifications/data?interval_type=day&ato_score=_100&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&reporting_authentication_type=SMS_EMAIL&session_aggregate_type=COUNT",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_verifications/data?interval_type=day&ato_score=_20&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&reporting_authentication_type=SMS_EMAIL&session_aggregate_type=COUNT",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_verifications/data?interval_type=day&ato_score=_0&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&reporting_authentication_type=SMS_EMAIL&session_aggregate_type=COUNT",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_verifications/data?interval_type=day&ato_score=_69&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&reporting_authentication_type=SMS_EMAIL&session_aggregate_type=COUNT",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_decisions/data?interval_type=day&ato_score=_69&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&decision_aggregate_type=TOTAL&decision_reason=MANUAL",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_decisions/data?interval_type=day&ato_score=_46&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&decision_aggregate_type=TOTAL&decision_reason=MANUAL",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/session_decisions/data?interval_type=day&ato_score=_85&interval_start=1704931200000&interval_end=1712707199999&time_zone=UTC&decision_aggregate_type=TOTAL&decision_reason=MANUAL",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/accounts_decisions2/data?interval_type=day&interval_start=1704931200000&interval_end=1712732399999&abuse_type=content_abuse&time_zone=America%2FLos_Angeles&aggregate_type=ALL_ACCOUNTS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/accounts_decisions2/data?interval_type=day&interval_start=1704931200000&interval_end=1712732399999&abuse_type=account_abuse&time_zone=America%2FLos_Angeles&aggregate_type=ALL_ACCOUNTS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/content_content_decisions/data?interval_type=day&content_types=comment%2Clegacy%2Clisting%2Cmessage%2Cpost%2Cprofile%2Creview&interval_start=1704931200000&interval_end=1712732399999&time_zone=America%2FLos_Angeles&aggregate_type=ALL_CONTENT",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/content_user_decisions/data?interval_type=day&content_types=comment%2Clegacy%2Clisting%2Cmessage%2Cpost%2Cprofile%2Creview&interval_start=1704931200000&interval_end=1712732399999&time_zone=America%2FLos_Angeles&aggregate_type=ALL_CONTENT",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/content_flags/data?content_types=comment%2Clegacy%2Clisting%2Cmessage%2Cpost%2Cprofile%2Creview&interval_type=day&interval_start=1704931200000&interval_end=1712732399999&time_zone=America%2FLos_Angeles",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/accounts_decisions2/data?interval_type=day&interval_start=1704931200000&interval_end=1712732399999&abuse_type=legacy&time_zone=America%2FLos_Angeles&aggregate_type=ALL_ACCOUNTS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/bizops/segments",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/v2/bizops/chargebacks2/data",
+            "method": "POST",
+            "body": {
+                "interval_type": "day",
+                "interval_start": 1704931200000,
+                "interval_end": 1712732399999,
+                "time_zone": "America/Los_Angeles",
+                "chargeback_type": "ALL_CHARGEBACKS",
+                "aggregate_type": "COUNT",
+                "group_by": [],
+                "filter_by": []
+            }
+        },
+        {
+            "url": "/reporting/v2/bizops/orders_chargebacks2/data",
+            "method": "POST",
+            "body": {
+                "interval_type": "day",
+                "interval_start": 1704931200000,
+                "interval_end": 1712732399999,
+                "time_zone": "America/Los_Angeles",
+                "aggregate_type": "COUNT",
+                "chargeback_type": "ALL_CHARGEBACKS",
+                "group_by": [],
+                "filter_by": []
+            }
+        },
+        {
+            "url": "/reporting/bizops/decisions_applied2/data?interval_type=day&entity_type=all&interval_start=1704931200000&interval_end=1712732399999&abuse_type=legacy&time_zone=America%2FLos_Angeles&aggregate_type=MANUAL_DECISIONS",
+            "method": "GET"
+        },
+        {
+            "url": "/reporting/v2/bizops/orders_order_decisions2/data",
+            "method": "POST",
+            "body": {
+                "interval_type": "day",
+                "interval_start": 1704931200000,
+                "interval_end": 1712732399999,
+                "abuse_type": "legacy",
+                "time_zone": "America/Los_Angeles",
+                "accounts_type": "ALL_ACCOUNTS",
+                "aggregate_type": "COUNT",
+                "group_by": [],
+                "filter_by": []
+            }
+        },
+        {
+            "url": "/reporting/v2/bizops/orders_user_decisions2/data",
+            "method": "POST",
+            "body": {
+                "interval_type": "day",
+                "interval_start": 1704931200000,
+                "interval_end": 1712732399999,
+                "abuse_type": "legacy",
+                "time_zone": "America/Los_Angeles",
+                "aggregate_type": "COUNT",
+                "accounts_type": "ALL_ACCOUNTS",
+                "group_by": [],
+                "filter_by": []
+            }
+        },
+        {
+            "url": "/reporting/v2/bizops/orders_transactions2/data",
+            "method": "POST",
+            "body": {
+                "interval_type": "day",
+                "interval_start": 1704931200000,
+                "interval_end": 1712732399999,
+                "time_zone": "America/Los_Angeles",
+                "aggregate_type": "COUNT",
+                "group_by": [],
+                "filter_by": []
+            }
+        },
+        {
+            "url": "/reporting/v2/bizops/chargebacks2/data",
+            "method": "POST",
+            "body": {
+                "interval_type": "day",
+                "interval_start": 1704931200000,
+                "interval_end": 1712732399999,
+                "time_zone": "America/Los_Angeles",
+                "chargeback_type": "ALL_CHARGEBACKS",
+                "aggregate_type": "COUNT",
+                "group_by": [],
+                "filter_by": []
+            }
+        },
+        {
+            "url": "/reporting/v2/bizops/orders_chargebacks2/data",
+            "method": "POST",
+            "body": {
+                "interval_type": "day",
+                "interval_start": 1704931200000,
+                "interval_end": 1712732399999,
+                "time_zone": "America/Los_Angeles",
+                "aggregate_type": "COUNT",
+                "chargeback_type": "ALL_CHARGEBACKS",
+                "group_by": [],
+                "filter_by": []
+            }
+        },
+        {
+            "url": "/reporting/v2/bizops/orders_order_decisions2/data",
+            "method": "POST",
+            "body": {
+                "interval_type": "day",
+                "interval_start": 1704931200000,
+                "interval_end": 1712732399999,
+                "abuse_type": "payment_abuse",
+                "time_zone": "America/Los_Angeles",
+                "accounts_type": "ALL_ACCOUNTS",
+                "aggregate_type": "COUNT",
+                "group_by": [],
+                "filter_by": []
+            }
+        },
+        {
+            "url": "/reporting/v2/bizops/orders_user_decisions2/data",
+            "method": "POST",
+            "body": {
+                "interval_type": "day",
+                "interval_start": 1704931200000,
+                "interval_end": 1712732399999,
+                "abuse_type": "payment_abuse",
+                "time_zone": "America/Los_Angeles",
+                "aggregate_type": "COUNT",
+                "accounts_type": "ALL_ACCOUNTS",
+                "group_by": [],
+                "filter_by": []
+            }
+        }
+    ],
+    "run_start": "2024-04-10 14:57:31"
+}

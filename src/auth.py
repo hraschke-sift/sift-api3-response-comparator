@@ -12,10 +12,10 @@ from dotenv import load_dotenv
 CONF_FILE = os.path.expanduser("~/.api3_tokens.yaml")
 
 
-def read_conf(env):
+def read_conf():
     if os.path.exists(CONF_FILE):
         with open(CONF_FILE, "r") as file:
-            return yaml.safe_load(file)[env]
+            return yaml.safe_load(file)
     return {}
 
 
@@ -96,9 +96,9 @@ def password_auth(env):
 
 
 def get_auth_token(env, refresh=False):
-    conf = read_conf(env)
-    auth_token = conf.get("auth_token")
-    refresh_token = conf.get("refresh_token")
+    conf = read_conf()
+    auth_token = conf.get(env, {}).get("auth_token")
+    refresh_token = conf.get(env, {}).get("refresh_token")
 
     if auth_token and refresh_token:
         if refresh:

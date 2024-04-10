@@ -25,10 +25,10 @@ def generate_config_json(test_run_dir="runs", env="dev"):
             input(
                 f"Place the completed config.json file in {test_run_dir}. Press return when ready... "
             )
-            config_file = f"{test_run_dir}/config.json"
-            with open(config_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
             try:
+                config_file = f"{test_run_dir}/config.json"
+                with open(config_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
                 if isinstance(data, dict):
                     if isinstance(data.get("cids"), list) and isinstance(
                         data.get("calls"), list
@@ -71,3 +71,4 @@ def generate_config_json(test_run_dir="runs", env="dev"):
         json.dump(data, f, ensure_ascii=False, indent=4)
 
     print(f"config.json has been saved to {config_file}")
+    print("")

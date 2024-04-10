@@ -61,13 +61,14 @@ def compare_responses(test_run_dir, db_path, cids, endpoints):
                 )
 
                 if not diff:
-                    diff = "None"
+                    diff = "No changes detected."
                 else:
                     diff = json.dumps(diff, cls=CustomJSONEncoder)
                     print("Differences found.")
 
             set_difference(db_path, cid, endpoint, diff)
             record_result(test_run_dir, cid, endpoint, diff)
+            print(f"See the complete results in {test_run_dir}/results.json")
 
 
 def report_run_duration(test_run_dir):
