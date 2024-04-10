@@ -40,7 +40,7 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
                 print("Invalid JSON format. Please try again.")
 
             data["base_url"] = url
-            data["execution_time"] = current_time
+            data["run_start"] = current_time
 
     else:
         cids = (
@@ -60,7 +60,7 @@ def generate_calls_json(test_run_dir="runs", env="dev"):
             more_calls = input("Add another call? (y/N): ").lower() == "y"
 
         data = {
-            "execution_time": current_time,
+            "run_start": current_time,
             "base_url": url,
             "cids": cids,
             "calls": calls,

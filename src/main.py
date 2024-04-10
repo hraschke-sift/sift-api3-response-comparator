@@ -5,8 +5,8 @@ from utils import (
     load_json_file,
     update_response_file,
     compare_responses,
+    report_run_duration,
 )
-import os
 
 
 def execute_api_calls(run_order, test_run_dir="runs/", env="prod"):
@@ -89,6 +89,8 @@ def main():
     print("Comparing 'before' and 'after' API calls...")
     compare_responses(test_run_dir)
 
+    # Report duration and record end time to calls.json
+    report_run_duration(test_run_dir)
 
 if __name__ == "__main__":
     main()
