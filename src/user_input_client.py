@@ -4,6 +4,18 @@ from output import c_print
 from utils import get_url_from_env
 
 
+def make_calls_list(calls):
+    return [
+        {
+            "eid": f"{index}_{call['url'.split('?')[0]]}",
+            "url": call["url"],
+            "method": call["method"],
+            "body": call.get("body"),
+        }
+        for index, call in enumerate(calls)
+    ]
+
+
 def generate_config_json(test_run_dir="runs", env="dev"):
     """
     Generates a config.json file based on user input.
@@ -44,7 +56,7 @@ def generate_config_json(test_run_dir="runs", env="dev"):
             "base_url": url,
             "run_start": current_time,
             "cids": data.get("cids"),
-            "calls": data.get("calls"),
+            "calls": make_calls_list(data.get("calls")),
         }
 
     else:
@@ -68,7 +80,7 @@ def generate_config_json(test_run_dir="runs", env="dev"):
             "run_start": current_time,
             "base_url": url,
             "cids": cids,
-            "calls": calls,
+            "calls": make_calls_list(calls),
         }
 
     config_file = f"{test_run_dir}/config.json"

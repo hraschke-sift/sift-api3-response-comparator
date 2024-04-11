@@ -39,18 +39,18 @@ def execute_api_calls(
                 env=env,
             )
 
-            call_string = f"{str(call_index)}_{call['url'].split('?')[0]}"
+            eid = call["eid"]
 
             # Save response data
             if response_data:
                 insert_or_update_response(
-                    db_path, cid, call_string, response_data, run_order == "before"
+                    db_path, cid, eid, response_data, run_order == "before"
                 )
             else:
                 insert_or_update_response(
                     db_path,
                     cid,
-                    call_string,
+                    eid,
                     {"error": "API call failed"},
                     run_order == "before",
                 )
@@ -101,10 +101,7 @@ def main():
 
     # Compare the results
     c_print.blue("Comparing 'before' and 'after' API calls...")
-    call_strings_array = [
-        f"{str(calls.index(call))}_{call['url'].split('?')[0]}" for call in calls
-    ]
-    compare_responses(test_run_dir, db_path, cids, call_strings_array)
+    compare_responses(test_run_dir, db_path, cids, calls)
 
     # Report duration and record end time to config.json
     report_run_duration(test_run_dir)
