@@ -93,15 +93,21 @@ def record_result(test_run_dir, cid, endpoint, result):
     # check if the results.json exists
     results_file = os.path.join(test_run_dir, "results.json")
     if os.path.exists(results_file):
-        with open(results_file, "r") as file:
-            results = json.load(file)
+      with open(results_file, "r") as file:
+        results = json.load(file)
     else:
-        results = {}
+      results = {}
 
     # update the results with the new result
     if result == "nil":
-        results[f"{cid}_{endpoint}"] = json.loads(result)
+      results[f"{cid}_{endpoint}"] = None
+    else:
+      try:
+        result_json = json.loads(result)
+        results[f"{cid}_{endpoint}"] = result_json
+      except json.JSONDecodeError:
+        results[f"{cid}_{endpoint}"] = result
 
     # write the updated results back to the file
     with open(results_file, "w") as file:
-        json.dump(results, file, indent=4)
+      json.dump(results, file, indent=4)
