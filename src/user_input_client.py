@@ -12,6 +12,7 @@ def make_calls_list(calls):
             "url": call["url"],
             "method": call["method"],
             "body": call.get("body"),
+            "exclude_paths": call.get("exclude_paths", []),
         }
         for index, call in enumerate(calls)
     ]

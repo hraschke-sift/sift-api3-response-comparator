@@ -43,19 +43,21 @@ def compare_responses(test_run_dir, db_path, cids, calls):
 
             diff = "Missing response data"
 
+            response_before = json.loads(response_before)
+            response_after = json.loads(response_after)
             if response_before and response_after:
+                exclude_paths = call.get("exclude_paths", [])
                 diff = DeepDiff(
                     response_before,
                     response_after,
                     ignore_order=True,
-                    exclude_paths={"root['request_id']"},
+                    exclude_paths=exclude_paths,
                 )
 
                 if not diff:
                     diff = "nil"
                 else:
                     # diff = json.dumps(diff, cls=CustomJSONEncoder)
-                    diff = str(diff)
                     c_print.warn("Differences found.")
 
             set_difference(db_path, cid, eid, str(diff))
