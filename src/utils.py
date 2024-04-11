@@ -71,7 +71,7 @@ def compare_responses(test_run_dir, db_path, cids, endpoints):
 
             set_difference(db_path, cid, endpoint, diff)
             record_result(test_run_dir, cid, endpoint, diff)
-            c_print.blue(f"See the complete results in {test_run_dir}/results.json")
+    c_print.blue(f"See the complete results in {test_run_dir}/results.json")
 
 
 def report_run_duration(test_run_dir):
@@ -93,21 +93,37 @@ def record_result(test_run_dir, cid, endpoint, result):
     # check if the results.json exists
     results_file = os.path.join(test_run_dir, "results.json")
     if os.path.exists(results_file):
-      with open(results_file, "r") as file:
-        results = json.load(file)
+        with open(results_file, "r") as file:
+            results = json.load(file)
     else:
-      results = {}
+        results = {}
 
     # update the results with the new result
     if result == "nil":
-      results[f"{cid}_{endpoint}"] = None
+        results[f"{cid}_{endpoint}"] = None
     else:
-      try:
-        result_json = json.loads(result)
-        results[f"{cid}_{endpoint}"] = result_json
-      except json.JSONDecodeError:
-        results[f"{cid}_{endpoint}"] = result
+        try:
+            result_json = json.loads(result)
+            deeply_decoded_result = decode_json_recursively(result_json)
+            results[f"{cid}_{endpoint}"] = deeply_decoded_result
+        except json.JSONDecodeError:
+            results[f"{cid}_{endpoint}"] = result
 
     # write the updated results back to the file
     with open(results_file, "w") as file:
-      json.dump(results, file, indent=4)
+        json.dump(results, file, indent=4)
+
+
+def decode_json_recursively(data):
+    if isinstance(data, str):
+        try:
+            data = json.loads(data)
+        except json.JSONDecodeError:
+            return data
+
+    if isinstance(data, dict):
+        return {key: decode_json_recursively(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [decode_json_recursively(item) for item in data]
+    else:
+        return data
