@@ -8,7 +8,7 @@ import os
 def make_calls_list(calls):
     return [
         {
-            "eid": f"{index}_{call['url'.split('?')[0]]}",
+            "eid": f"{index}_{call['url'].split('?')[0]}",
             "url": call["url"],
             "method": call["method"],
             "body": call.get("body"),
