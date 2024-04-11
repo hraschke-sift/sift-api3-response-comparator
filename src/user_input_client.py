@@ -40,7 +40,6 @@ def generate_config_json(test_run_dir="runs", env="dev"):
             except:
                 c_print.warn("Invalid JSON file. Please try again.")
 
-
         data = {
             "base_url": url,
             "run_start": current_time,

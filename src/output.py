@@ -16,38 +16,38 @@ class Colors:
 class c_print:
     # If called without static method, simply print the string
     @staticmethod
-    def __call__(print_string):
-        # print the string
-        print(print_string)
+    def __call__(**print_stringss):
+        # print the strings
+        print(**print_stringss)
 
     @staticmethod
-    def time(print_string):
+    def time(*print_strings):
         # add timestamp to print statements
         print(
-            f"[{datetime.datetime.now().strftime('%H:%M:%S:%f')[:-3]}] {print_string}"
+            f"[{datetime.datetime.now().strftime('%H:%M:%S:%f')[:-3]}]", *print_strings
         )
 
     @staticmethod
-    def ok(print_string):
+    def ok(*print_strings):
         # print success message
-        c_print.time(f"{Colors.OKGREEN}{print_string}{Colors.ENDC}")
+        c_print.time(Colors.OKGREEN, *print_strings, Colors.ENDC)
 
     @staticmethod
-    def blue(print_string):
+    def blue(*print_strings):
         # print info message
-        c_print.time(f"{Colors.OKBLUE}{print_string}{Colors.ENDC}")
+        c_print.time(Colors.OKBLUE, *print_strings, Colors.ENDC)
 
     @staticmethod
-    def cyan(print_string):
+    def cyan(*print_strings):
         # print info message
-        c_print.time(f"{Colors.OKCYAN}{print_string}{Colors.ENDC}")
+        c_print.time(Colors.OKCYAN, *print_strings, Colors.ENDC)
 
     @staticmethod
-    def warn(print_string):
+    def warn(*print_strings):
         # print warning message
-        c_print.time(f"{Colors.WARNING}{print_string}{Colors.ENDC}")
+        c_print.time(Colors.WARNING, *print_strings, Colors.ENDC)
 
     @staticmethod
-    def fail(print_string):
+    def fail(*print_strings):
         # print error message
-        c_print.time(f"{Colors.FAIL}{print_string}{Colors.ENDC}")
+        c_print.time(Colors.FAIL, *print_strings, Colors.ENDC)
