@@ -2,6 +2,7 @@ import json
 import datetime
 from output import c_print
 from utils import get_url_from_env
+import os
 
 
 def make_calls_list(calls):
@@ -35,9 +36,15 @@ def generate_config_json(test_run_dir="runs", env="dev"):
     if data_input_method == "y":
         valid_json = False
         while not valid_json:
-            input(
-                f"Place the completed config.json file in {test_run_dir}. Press return when ready... "
-            )
+            # Create the config.json file if it doesn't already exist
+            config_file = f"{test_run_dir}/config.json"
+            if not os.path.exists(config_file):
+                open(config_file, "w").close()
+
+            # Open the file in editor
+            input("Press enter to open the editor...")
+            os.system(f"vim {config_file}")
+
             try:
                 config_file = f"{test_run_dir}/config.json"
                 with open(config_file, "r", encoding="utf-8") as f:
