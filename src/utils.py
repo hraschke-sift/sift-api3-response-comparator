@@ -31,27 +31,15 @@ def get_url_from_env(env):
     return url_options.get(env, "")
 
 
-class CustomJSONEncoder(json.JSONEncoder):
-    """
-    Custom JSON encoder that converts PrettyOrderedSet to list when encoding JSON.
-    Everything else passes through to the base class.
-    Can be extended to handle other custom types as needed.
-    """
-
-    def default(self, obj):
-        if isinstance(obj, PrettyOrderedSet):
-            return list(obj)  # Convert PrettyOrderedSet to list
-        # Let the base class default method raise the TypeError
-        return json.JSONEncoder.default(self, obj)
-
-
-def compare_responses(test_run_dir, db_path, cids, endpoints):
+def compare_responses(test_run_dir, db_path, cids, calls):
     for cid in cids:
-        for endpoint in endpoints:
+        for call in calls:
             c_print.time(
-                "Comparing responses for customer ID:", cid, "Endpoint:", endpoint
+                "Comparing responses for customer ID:", cid, "Endpoint:", call["url"]
             )
-            response_before, response_after = get_responses(db_path, cid, endpoint)
+
+            eid = call["eid"]
+            response_before, response_after = get_responses(db_path, cid, eid)
 
             diff = "Missing response data"
 
@@ -66,11 +54,12 @@ def compare_responses(test_run_dir, db_path, cids, endpoints):
                 if not diff:
                     diff = "nil"
                 else:
-                    diff = json.dumps(diff, cls=CustomJSONEncoder)
+                    # diff = json.dumps(diff, cls=CustomJSONEncoder)
+                    diff = str(diff)
                     c_print.warn("Differences found.")
 
-            set_difference(db_path, cid, endpoint, diff)
-            record_result(test_run_dir, cid, endpoint, diff)
+            set_difference(db_path, cid, eid, str(diff))
+            record_result(test_run_dir, cid, eid, diff)
     c_print.blue(f"See the complete results in {test_run_dir}/results.json")
 
 
@@ -96,22 +85,39 @@ def record_result(test_run_dir, cid, endpoint, result):
         with open(results_file, "r") as file:
             results = json.load(file)
     else:
-        results = {}
+        results = {
+            "all_results": {},
+            "results_by_cid": {},
+            "results_by_endpoint": {},
+            "total_diffs": 0,
+        }
 
     # update the results with the new result
-    if result == "nil":
-        results[f"{cid}_{endpoint}"] = None
-    else:
-        try:
-            result_json = json.loads(result)
-            deeply_decoded_result = decode_json_recursively(result_json)
-            results[f"{cid}_{endpoint}"] = deeply_decoded_result
-        except json.JSONDecodeError:
-            results[f"{cid}_{endpoint}"] = result
+    if not result == "nil":
+        results["all_results"][f"{cid}_{endpoint}"] = result
+        results["results_by_cid"].setdefault(cid, {})[endpoint] = result
+        results["results_by_endpoint"].setdefault(endpoint, {})[cid] = result
+        results["total_diffs"] += 1
 
     # write the updated results back to the file
     with open(results_file, "w") as file:
         json.dump(results, file, indent=4)
+
+
+# TODO(henry) make a class with methods for loads and dumps that employ these functions
+# We can programatically decide whether we want PrettyOrderedSet or JSON output
+class CustomJSONEncoder(json.JSONEncoder):
+    """
+    Custom JSON encoder that converts PrettyOrderedSet to list when encoding JSON.
+    Everything else passes through to the base class.
+    Can be extended to handle other custom types as needed.
+    """
+
+    def default(self, obj):
+        if isinstance(obj, PrettyOrderedSet):
+            return list(obj)  # Convert PrettyOrderedSet to list
+        # Let the base class default method raise the TypeError
+        return json.JSONEncoder.default(self, obj)
 
 
 def decode_json_recursively(data):
