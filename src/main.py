@@ -1,3 +1,4 @@
+import json
 from api_client import make_api_call
 from user_input_client import generate_config_json
 from utils import (
@@ -8,6 +9,7 @@ from utils import (
 )
 from output import c_print
 from db import create_database, insert_or_update_response
+from synthesize_results import process_deepdiff_output
 
 
 def execute_api_calls(
@@ -102,6 +104,11 @@ def main():
     # Compare the results
     c_print.blue("Comparing 'before' and 'after' API calls...")
     compare_responses(test_run_dir, db_path, cids, calls)
+
+    # Process the output to summarized results
+    deepdiff_results = load_json_file(f"{test_run_dir}/results.json")
+    results_summary = process_deepdiff_output(deepdiff_results, summary_type="eid")
+    print(json.dumps(results_summary, indent=4))
 
     # Report duration and record end time to config.json
     report_run_duration(test_run_dir)
