@@ -55,7 +55,7 @@ def compare_responses(test_run_dir, db_path, cids, calls):
                 )
 
                 if not diff:
-                    diff = "nil"
+                    diff = {}
                 else:
                     # diff = json.dumps(diff, cls=CustomJSONEncoder)
                     c_print.warn("Differences found.")
@@ -95,10 +95,10 @@ def record_result(test_run_dir, cid, endpoint, result):
         }
 
     # update the results with the new result
-    if not result == "nil":
-        results["all_results"][f"{cid}_{endpoint}"] = result
-        results["results_by_cid"].setdefault(cid, {})[endpoint] = result
-        results["results_by_endpoint"].setdefault(endpoint, {})[cid] = result
+    results["all_results"][f"{cid}_{endpoint}"] = result
+    results["results_by_cid"].setdefault(cid, {})[endpoint] = result
+    results["results_by_endpoint"].setdefault(endpoint, {})[cid] = result
+    if not result == {}:
         results["total_diffs"] += 1
 
     # write the updated results back to the file
