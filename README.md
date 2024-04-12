@@ -103,7 +103,7 @@ Once it has finished, the tool will compare the `before_results` and `after_resu
 Below is an overview of the key directories and files within the Database Migration Validation Tool project:
 ```
 sift-api3-response-comparator/
-|
+│
 ├── src/ # Source code for the tool
 │ ├── api_client.py # Module for making API requests
 │ ├── auth.py # Authentication module for API calls
@@ -141,3 +141,6 @@ Initial version. Known bugs:
 - Added sqlite3 support to address performance issues
 - Bug fixes
 - Added color-coded command line outputs
+
+### [0.2.1] - 2024-09-12
+- Added change synthesis to see summary by endpoint, cid, or all changes
