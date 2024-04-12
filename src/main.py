@@ -108,7 +108,10 @@ def main():
     # Process the output to summarized results
     deepdiff_results = load_json_file(f"{test_run_dir}/results.json")
     results_summary = process_deepdiff_output(deepdiff_results, summary_type="eid")
-    print(json.dumps(results_summary, indent=4))
+    report_file = f"{test_run_dir}/report.json"
+    with open(report_file, "w") as f:
+      json.dump(results_summary, f, indent=4)
+    c_print.blue(f"Results summary written to {report_file}")
 
     # Report duration and record end time to config.json
     report_run_duration(test_run_dir)
