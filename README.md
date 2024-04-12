@@ -104,6 +104,8 @@ Below is an overview of the key directories and files within the Database Migrat
 ```
 sift-api3-response-comparator/
 │
+├── cli.py # CLI entry point
+│
 ├── src/ # Source code for the tool
 │ ├── api_client.py # Module for making API requests
 │ ├── auth.py # Authentication module for API calls
