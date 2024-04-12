@@ -95,19 +95,22 @@ The test tool will then make the same calls again, storing the outputs in a new 
 
 Once it has finished, the tool will compare the `before_results` and `after_results` columns in the db. If there is a difference, it will record that to the `results.json` file (also found in the `runs/directory`, as a peer to `config.json`).
 
+6. **Results Summary**: After your test run, the `results.json` output will be summarized into an average of the magnitude of all detected changes, organized by endpoint.
+
 
 ## Project Structure
 
 Below is an overview of the key directories and files within the Database Migration Validation Tool project:
 ```
 sift-api3-response-comparator/
-│
+|
 ├── src/ # Source code for the tool
 │ ├── api_client.py # Module for making API requests
 │ ├── auth.py # Authentication module for API calls
 │ ├── db.py # Module for interacting with the SQLite database
 │ ├── user_input_client.py # tool for taking inputs & generating config.json
 │ ├── main.py # Main script for orchestrating the validation process
+│ ├── synthesize_results.py # Data handling for summarizing results.json by entity
 │ └── utils.py # Utility functions, including file operations and comparison logic
 │
 ├── runs/ # Directory for storing test run configs and results
