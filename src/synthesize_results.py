@@ -1,4 +1,3 @@
-import json
 from typing import Any, Dict, List
 
 
@@ -112,18 +111,3 @@ def process_deepdiff_output(
         raise ValueError(
             "Invalid summary type. Please choose 'by_endpoint', 'by_cid', or 'all_changes'."
         )
-
-
-# Example usage
-deepdiff_results = json.load(open("runs/1712960839_stg1/results.json"))
-results_summary = process_deepdiff_output(deepdiff_results, summary_type="by_endpoint")
-# Output the results
-print(json.dumps(results_summary, indent=4))
-
-
-# Example usage
-deepdiff_results = json.load(open("runs/1712960839_stg1/results.json"))
-results_summary = process_deepdiff_output(deepdiff_results)
-
-# Output the results
-print(json.dumps(results_summary, indent=4))
