@@ -14,7 +14,6 @@ def calculate_percentage_difference(old_value: Any, new_value: Any) -> float:
 
 
 def process_arrays(old_items: List[Dict], new_items: List[Dict]) -> float:
-    """Process arrays of dictionaries and calculate a summarized change percentage."""
     changes = []
     for idx, (old, new) in enumerate(zip(old_items, new_items)):
         for key in set(old.keys()).union(new.keys()):
@@ -75,13 +74,55 @@ def summarize_changes_by_endpoint(deepdiff_results: Dict[str, Any]) -> Dict[str,
     return results
 
 
-def process_deepdiff_output(deepdiff_results: Dict[str, Any]) -> Dict[str, float]:
-    """Process the structured deepdiff results based on provided interfaces."""
-    return summarize_changes_by_endpoint(deepdiff_results)
+def summarize_changes_by_cid(deepdiff_results: Dict[str, Any]) -> Dict[str, float]:
+    results = {}
+    for cid, endpoints_changes in deepdiff_results["results_by_cid"].items():
+        all_changes = []
+        for endpoint, change_obj in endpoints_changes.items():
+            values_changed = change_obj.get("values_changed")
+            if values_changed:  # There are changes to process
+                for value_change in values_changed.values():
+                    old_value = value_change["old_value"]
+                    new_value = value_change["new_value"]
+                    if isinstance(old_value, list) and isinstance(new_value, list):
+                        all_changes.append(process_arrays(old_value, new_value))
+                    elif isinstance(old_value, (int, float)) and isinstance(
+                        new_value, (int, float)
+                    ):
+                        all_changes.append(
+                            calculate_percentage_difference(old_value, new_value)
+                        )
+            else:  # No changes, treat as 0 change
+                all_changes.append(0.0)
+        if all_changes:
+            results[cid] = sum(all_changes) / len(all_changes)
+    return results
+
+
+def process_deepdiff_output(
+    deepdiff_results: Dict[str, Any], summary_type: str
+) -> Dict[str, float]:
+    if summary_type == "eid":
+        return summarize_changes_by_endpoint(deepdiff_results)
+    elif summary_type == "cid":
+        return summarize_changes_by_cid(deepdiff_results)
+    elif summary_type == "changes":
+        return summarize_all_changes(deepdiff_results)
+    else:
+        raise ValueError(
+            "Invalid summary type. Please choose 'by_endpoint', 'by_cid', or 'all_changes'."
+        )
 
 
 # Example usage
-deepdiff_results = json.load(open("runs/1712944999_stg1/results.json"))
+deepdiff_results = json.load(open("runs/1712960839_stg1/results.json"))
+results_summary = process_deepdiff_output(deepdiff_results, summary_type="by_endpoint")
+# Output the results
+print(json.dumps(results_summary, indent=4))
+
+
+# Example usage
+deepdiff_results = json.load(open("runs/1712960839_stg1/results.json"))
 results_summary = process_deepdiff_output(deepdiff_results)
 
 # Output the results
