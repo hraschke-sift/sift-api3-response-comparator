@@ -29,30 +29,9 @@ def summarize_all_changes(deepdiff_results: Dict[str, Any]) -> Dict[str, float]:
     results = {}
     for cid_index_endpoint, change_obj in deepdiff_results["all_results"].items():
         all_changes = []
-        for value_change in change_obj["values_changed"].values():
-            old_value = value_change["old_value"]
-            new_value = value_change["new_value"]
-            if isinstance(old_value, list) and isinstance(new_value, list):
-                all_changes.append(process_arrays(old_value, new_value))
-            elif isinstance(old_value, (int, float)) and isinstance(
-                new_value, (int, float)
-            ):
-                all_changes.append(
-                    calculate_percentage_difference(old_value, new_value)
-                )
-        if all_changes:
-            # Calculate average of all changes for this cid_index_endpoint
-            results[cid_index_endpoint] = sum(all_changes) / len(all_changes)
-    return results
-
-
-def summarize_changes_by_endpoint(deepdiff_results: Dict[str, Any]) -> Dict[str, float]:
-    """Summarize changes by endpoint across all CIDs."""
-    results = {}
-    for endpoint, cid_changes in deepdiff_results["results_by_endpoint"].items():
-        all_changes = []
-        for cid, change_obj in cid_changes.items():
-            for value_change in change_obj["values_changed"].values():
+        values_changed = change_obj.get("values_changed")
+        if values_changed:  # There are changes to process
+            for value_change in values_changed.values():
                 old_value = value_change["old_value"]
                 new_value = value_change["new_value"]
                 if isinstance(old_value, list) and isinstance(new_value, list):
@@ -63,6 +42,34 @@ def summarize_changes_by_endpoint(deepdiff_results: Dict[str, Any]) -> Dict[str,
                     all_changes.append(
                         calculate_percentage_difference(old_value, new_value)
                     )
+        else:  # No changes, treat as 0 change
+            all_changes.append(0.0)
+        if all_changes:
+            # Calculate average of all changes for this cid_index_endpoint
+            results[cid_index_endpoint] = sum(all_changes) / len(all_changes)
+    return results
+
+
+def summarize_changes_by_endpoint(deepdiff_results: Dict[str, Any]) -> Dict[str, float]:
+    results = {}
+    for endpoint, cid_changes in deepdiff_results["results_by_endpoint"].items():
+        all_changes = []
+        for cid, change_obj in cid_changes.items():
+            values_changed = change_obj.get("values_changed")
+            if values_changed:  # There are changes to process
+                for value_change in values_changed.values():
+                    old_value = value_change["old_value"]
+                    new_value = value_change["new_value"]
+                    if isinstance(old_value, list) and isinstance(new_value, list):
+                        all_changes.append(process_arrays(old_value, new_value))
+                    elif isinstance(old_value, (int, float)) and isinstance(
+                        new_value, (int, float)
+                    ):
+                        all_changes.append(
+                            calculate_percentage_difference(old_value, new_value)
+                        )
+            else:  # No changes, treat as 0 change
+                all_changes.append(0.0)
         if all_changes:
             results[endpoint] = sum(all_changes) / len(all_changes)
     return results
@@ -70,7 +77,7 @@ def summarize_changes_by_endpoint(deepdiff_results: Dict[str, Any]) -> Dict[str,
 
 def process_deepdiff_output(deepdiff_results: Dict[str, Any]) -> Dict[str, float]:
     """Process the structured deepdiff results based on provided interfaces."""
-    return summarize_all_changes(deepdiff_results)
+    return summarize_changes_by_endpoint(deepdiff_results)
 
 
 # Example usage
