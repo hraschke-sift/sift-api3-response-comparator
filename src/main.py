@@ -61,7 +61,7 @@ def execute_api_calls(
     print("")
 
 
-def run_test_tool(env, config_path, output_dir, summary_type="eid", no_pause=False):
+def run_test_tool(env, config_path, output_dir, summary_type="eid", skip_pause=False):
     # Get environment and create test run directory
     if not env:
         env = input("Enter environment (dev/expr/stg1/prod): ").lower()
@@ -93,7 +93,7 @@ def run_test_tool(env, config_path, output_dir, summary_type="eid", no_pause=Fal
     execute_api_calls(cids, calls, base_url, "before", env, db_path)
 
     # Pause for database migration
-    if not no_pause:
+    if not skip_pause:
         input(
             "Please complete the change to be validated now. Press Enter to continue once done..."
         )
