@@ -61,25 +61,26 @@ def execute_api_calls(
     print("")
 
 
-def main():
+def run_test_tool(env, config_path, output_dir, summary_type="eid"):
     # Get environment and create test run directory
-    env = input("Enter environment (dev/expr/stg1/prod): ").lower()
-    valid_env_options = ["dev", "expr", "stg1", "prod"]
-    while env not in valid_env_options:
-        env = input(
-            "Invalid environment. Please enter a valid environment (dev/expr/stg1/prod)"
-        ).lower()
+    if not env:
+      env = input("Enter environment (dev/expr/stg1/prod): ").lower()
+      valid_env_options = ["dev", "expr", "stg1", "prod"]
+      while env not in valid_env_options:
+          env = input(
+              "Invalid environment. Please enter a valid environment (dev/expr/stg1/prod)"
+          ).lower()
 
-    test_run_dir = create_run_directory("runs/", env)
-    c_print.blue(f"Test run directory created at {test_run_dir}")
+    test_run_dir = create_run_directory(env, output_dir)
+    c_print.blue(f"Test run will output at {test_run_dir}")
 
     # Create DB
     db_path = f"{test_run_dir}/responses.db"
     create_database(db_path)
 
     # Generate config.json via CLI prompts
-    generate_config_json(test_run_dir, env)
-    input("Files generated. Press Enter to execute API calls...")
+    generate_config_json(test_run_dir, env, config_path)
+    input("Config file validated. Press Enter to execute API calls...")
     print("")
 
     config_file = load_json_file(f"{test_run_dir}/config.json")
@@ -118,4 +119,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    print("This script should be run via the CLI.")
