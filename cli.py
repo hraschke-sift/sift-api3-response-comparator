@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import typer
 from main import run_test_tool
 import os
@@ -37,12 +39,19 @@ def setup_env(
 if __name__ == "__main__":
     app()
 
-def validate_inputs(env: str, config_path: str, output_dir: str, summary_type: str, no_pause: bool):
+
+def validate_inputs(
+    env: str, config_path: str, output_dir: str, summary_type: str, no_pause: bool
+):
     if env not in ["dev", "expr", "stg1", "prod"]:
-        raise ValueError("Invalid environment. Please choose one of 'dev', 'stg1', 'expr', or 'prod'.")
+        raise ValueError(
+            "Invalid environment. Please choose one of 'dev', 'stg1', 'expr', or 'prod'."
+        )
     if config_path and not os.path.isfile(config_path):
         raise FileNotFoundError(f"Config file '{config_path}' does not exist.")
     if summary_type not in ["all", "endpoint", "cid"]:
-        raise ValueError("Invalid summary type. Please choose 'all', 'endpoint', or 'cid'.")
+        raise ValueError(
+            "Invalid summary type. Please choose 'all', 'endpoint', or 'cid'."
+        )
     if not isinstance(no_pause, bool):
         raise ValueError("no_pause must be a boolean value.")
