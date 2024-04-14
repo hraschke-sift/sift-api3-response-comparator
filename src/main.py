@@ -61,7 +61,7 @@ def execute_api_calls(
     print("")
 
 
-def run_test_tool(env, config_path, output_dir, summary_type="eid"):
+def run_test_tool(env, config_path, output_dir, summary_type="eid", no_pause=False):
     # Get environment and create test run directory
     if not env:
       env = input("Enter environment (dev/expr/stg1/prod): ").lower()
@@ -93,10 +93,11 @@ def run_test_tool(env, config_path, output_dir, summary_type="eid"):
     execute_api_calls(cids, calls, base_url, "before", env, db_path)
 
     # Pause for database migration
-    input(
-        "Please complete the change to be validated now. Press Enter to continue once done..."
-    )
-    print("")
+    if not no_pause:
+      input(
+          "Please complete the change to be validated now. Press Enter to continue once done..."
+      )
+      print("")
 
     # Execute API calls for "after"
     c_print.blue("Executing 'after' API calls...")
@@ -108,7 +109,7 @@ def run_test_tool(env, config_path, output_dir, summary_type="eid"):
 
     # Process the output to summarized results
     deepdiff_results = load_json_file(f"{test_run_dir}/results.json")
-    results_summary = process_deepdiff_output(deepdiff_results, summary_type="eid")
+    results_summary = process_deepdiff_output(deepdiff_results, summary_type)
     report_file = f"{test_run_dir}/report.json"
     with open(report_file, "w") as f:
       json.dump(results_summary, f, indent=4)
