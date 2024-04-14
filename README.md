@@ -37,10 +37,25 @@ cd sift-api3-response-comparator
 python3 -m venv venv
 source venv/bin/activate
 ```
+
 3. **Install Dependencies**:
 ```
-pip install -r requirements.txt
+pip install .
 ```
+This command installs the package and all dependencies as specified in setup.py. It's recommended for most users who just need to run the tool.
+
+## Development Installation
+If you plan to modify the code, run tests, or contribute to the project, you'll want to install the development dependencies as well.
+
+Follow steps 1 and 2 above to clone the repository and set up a virtual environment.
+
+Install the package with development dependencies:
+
+```sh
+pip install -e .[dev]
+```
+
+This command installs the package in editable mode and includes extra dependencies necessary for development such as linters and testing tools.
 
 ## Usage
 
@@ -55,14 +70,28 @@ Before you begin, collect the CIDs for the customers that you want to run these 
 
 You will also want to compile a list of the API3 endpoints that you will want to hit. All of them will need to begin with `/v3/accounts/{{cid}}/`, where `cid` will be filled in with the customer ids you collected. Copy all requests starting with the text after the customer id and paste them into a list. You will add them one-by-one using the prompter.
 
-### Execution
+### Running the Tool
 
-Run the tool by running the following from the root directory.
-```
-python src/main.py
+After installation, you can run the tool from any directory using the command-line interface:
+
+```sh
+api3-comparator [COMMAND] [OPTIONS]
+For help on the available commands and options, run:
 ```
 
-You will be lead through a series of prompts:
+```sh
+api3-comparator --help
+```
+
+#### Specify Options with CLI
+It is recommended you run the CLI with the following options:
+* `--env [dev/expr/stg1/prod]`
+* `--config-path [path-to-config-json]`
+
+If you do so, you can skip the's tool's manual entry functionality.
+
+#### Manual Input
+If you do not enter options for environment and/or config path, you will be lead through a series of prompts:
 
 1. **Enter Environment**: You must choose your environment by entering one of dev, expr,stg1, or prod. If you enter an invalid string, the tool will prompt you again.
 
@@ -81,7 +110,8 @@ The prompt will then ask if you want to enter a new call. If you enter "y", you 
 
 The tool will then make a json file at `runs/config.json`. This will include all test data and will be used during execution to make all the necessary requests.
 
-5. **Test Run**: At this point, all the calls will be made for each customer and retrieved data will be stored in a local `sqlite` database (in the `db/` directory).
+#### Text execution
+**Test Run**: At this point, all the calls will be made for each customer and retrieved data will be stored in a local `sqlite` database file.
 
 You may be asked to enter your username and password for the Sift Console, as well as a TOTP token. __Make sure to use your sift console credentials and OTP! Not Okta.__
 
@@ -95,7 +125,9 @@ The test tool will then make the same calls again, storing the outputs in a new 
 
 Once it has finished, the tool will compare the `before_results` and `after_results` columns in the db. If there is a difference, it will record that to the `results.json` file (also found in the `runs/directory`, as a peer to `config.json`).
 
-6. **Results Summary**: After your test run, the `results.json` output will be summarized into an average of the magnitude of all detected changes, organized by endpoint.
+**Results Summary**: After your test run, the `results.json` output will be summarized into an average of the magnitude of all detected changes, organized by endpoint.
+
+A `report.json` file will be generated that will show the averages of all the changes per entity. If you specified `--summary_type endpoint`, then it will show aggregated for 
 
 
 ## Project Structure
@@ -133,16 +165,21 @@ Initial version. Known bugs:
 ### [0.1.0] - 2024-04-09
 - Bug fix for 401s in other environments. Now uses environment-specific auth.
 
-### [0.1.1] - 2024-09-10
+### [0.1.1] - 2024-04-10
 - Changed naming conventions for runs directory
 - Functionality for using .env for storing username and password
 - Added execution time tracking
 - Removed rerun functionality (not practical)
 
-### [0.2.0] - 2024-09-10
+### [0.2.0] - 2024-04-10
 - Added sqlite3 support to address performance issues
 - Bug fixes
 - Added color-coded command line outputs
 
-### [0.2.1] - 2024-09-12
+### [0.2.1] - 2024-04-12
 - Added change synthesis to see summary by endpoint, cid, or all changes
+
+### [0.2.2] - 2024-04-14
+- Added cli support
+- packaged with setup.py
+- updated readme
