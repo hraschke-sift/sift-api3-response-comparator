@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import typer
-from main import run_test_tool
 import os
+from src.main import run_test_tool
 
 app = typer.Typer()
 
