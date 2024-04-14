@@ -4,8 +4,6 @@ import typer
 import os
 from main import run_test_tool
 
-app = typer.Typer()
-
 
 def validate_inputs(
     env: str, config_path: str, output_dir: str, summary_type: str, skip_pause: bool
@@ -24,7 +22,6 @@ def validate_inputs(
         raise ValueError("skip_pause must be a boolean value.")
 
 
-@app.callback()
 def start(
     env: str = typer.Option("", help="Environment (dev/expr/stg1/prod)"),
     config_path: str = typer.Option("", help="Path to the config.json file"),
@@ -33,20 +30,20 @@ def start(
         "endpoint", help="Summary type: 'all', 'endpoint', 'cid'"
     ),
     skip_pause: bool = typer.Option(False, help="Do not pause in between runs"),
+    setup_env: bool = typer.Option(False, help="Run setup for making .env file"),
 ):
-    """Runs the API test tool with specified options."""
     validate_inputs(env, config_path, output_dir, summary_type, skip_pause)
+    if setup_env:
+        setup_env()
     run_test_tool(env, config_path, output_dir, summary_type, skip_pause)
 
 
-@app.command()
 def setup_env(
     username: str = typer.Option(..., prompt=True, help="Username for the .env file"),
     password: str = typer.Option(
         ..., prompt=True, hide_input=True, help="Password for the .env file"
     ),
 ):
-    """Creates an .env file with the provided username and password."""
     with open(".env", "w") as f:
         f.write(f"USERNAME={username}\n")
         f.write(f"PASSWORD={password}\n")
@@ -54,4 +51,4 @@ def setup_env(
 
 
 if __name__ == "__main__":
-    app()
+    typer.run(start)
