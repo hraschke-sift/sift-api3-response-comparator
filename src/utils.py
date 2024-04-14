@@ -13,11 +13,12 @@ def load_json_file(file_path):
         return json.load(file)
 
 
-def create_run_directory(base_path, env):
-    timestamp = math.floor(datetime.now().timestamp())
-    dir_path = os.path.join(base_path, f"{timestamp}_{env}")
-    os.makedirs(dir_path, exist_ok=True)
-    return dir_path
+def create_run_directory(env, output_dir):
+    if not output_dir:
+      timestamp = math.floor(datetime.now().timestamp())
+      output_dir = os.path.join("runs/", f"{timestamp}_{env}")
+    os.makedirs(output_dir, exist_ok=True)
+    return output_dir
 
 
 def get_url_from_env(env):
@@ -108,12 +109,6 @@ def record_result(test_run_dir, cid, endpoint, result):
 # TODO(henry) make a class with methods for loads and dumps that employ these functions
 # We can programatically decide whether we want PrettyOrderedSet or JSON output
 class CustomJSONEncoder(json.JSONEncoder):
-    """
-    Custom JSON encoder that converts PrettyOrderedSet to list when encoding JSON.
-    Everything else passes through to the base class.
-    Can be extended to handle other custom types as needed.
-    """
-
     def default(self, obj):
         if isinstance(obj, PrettyOrderedSet):
             return list(obj)  # Convert PrettyOrderedSet to list
