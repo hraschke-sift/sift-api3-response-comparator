@@ -39,7 +39,7 @@ def generate_config_json(test_run_dir, env, config_path=None):
     if config_path:
         with open(config_path, "r", encoding="utf-8") as f:
             loaded_data = json.load(f)
-        if not is_valid_json(data):
+        if not is_valid_json(loaded_data):
             c_print.fail("Invalid JSON in congig file. Please try again.")
             return
         calls = loaded_data["calls"]
