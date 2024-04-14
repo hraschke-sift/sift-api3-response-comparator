@@ -15,8 +15,8 @@ def load_json_file(file_path):
 
 def create_run_directory(env, output_dir):
     if not output_dir:
-      timestamp = math.floor(datetime.now().timestamp())
-      output_dir = os.path.join("runs/", f"{timestamp}_{env}")
+        timestamp = math.floor(datetime.now().timestamp())
+        output_dir = os.path.join("runs/", f"{timestamp}_{env}")
     os.makedirs(output_dir, exist_ok=True)
     return output_dir
 

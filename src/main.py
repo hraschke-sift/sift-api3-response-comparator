@@ -64,12 +64,12 @@ def execute_api_calls(
 def run_test_tool(env, config_path, output_dir, summary_type="eid", no_pause=False):
     # Get environment and create test run directory
     if not env:
-      env = input("Enter environment (dev/expr/stg1/prod): ").lower()
-      valid_env_options = ["dev", "expr", "stg1", "prod"]
-      while env not in valid_env_options:
-          env = input(
-              "Invalid environment. Please enter a valid environment (dev/expr/stg1/prod)"
-          ).lower()
+        env = input("Enter environment (dev/expr/stg1/prod): ").lower()
+        valid_env_options = ["dev", "expr", "stg1", "prod"]
+        while env not in valid_env_options:
+            env = input(
+                "Invalid environment. Please enter a valid environment (dev/expr/stg1/prod)"
+            ).lower()
 
     test_run_dir = create_run_directory(env, output_dir)
     c_print.blue(f"Test run will output at {test_run_dir}")
@@ -94,10 +94,10 @@ def run_test_tool(env, config_path, output_dir, summary_type="eid", no_pause=Fal
 
     # Pause for database migration
     if not no_pause:
-      input(
-          "Please complete the change to be validated now. Press Enter to continue once done..."
-      )
-      print("")
+        input(
+            "Please complete the change to be validated now. Press Enter to continue once done..."
+        )
+        print("")
 
     # Execute API calls for "after"
     c_print.blue("Executing 'after' API calls...")
@@ -112,7 +112,7 @@ def run_test_tool(env, config_path, output_dir, summary_type="eid", no_pause=Fal
     results_summary = process_deepdiff_output(deepdiff_results, summary_type)
     report_file = f"{test_run_dir}/report.json"
     with open(report_file, "w") as f:
-      json.dump(results_summary, f, indent=4)
+        json.dump(results_summary, f, indent=4)
     c_print.blue(f"Results summary written to {report_file}")
 
     # Report duration and record end time to config.json

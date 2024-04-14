@@ -17,6 +17,7 @@ def make_calls_list(calls):
         for index, call in enumerate(calls)
     ]
 
+
 def is_valid_json(data):
     try:
         if isinstance(data, dict):
@@ -45,45 +46,47 @@ def generate_config_json(test_run_dir, env, config_path=None):
         cids = loaded_data["cids"]
 
     else:
-      data_input_method = input(
-          "Do you want load an existing JSON config file? (y/N): "
-      ).lower()
+        data_input_method = input(
+            "Do you want load an existing JSON config file? (y/N): "
+        ).lower()
 
-      if data_input_method == "y":
-          valid_json = False
-          while not valid_json:
-              # Create the config.json file if it doesn't already exist
-              config_file = f"{test_run_dir}/config.json"
-              if not os.path.exists(config_file):
-                  open(config_file, "w").close()
+        if data_input_method == "y":
+            valid_json = False
+            while not valid_json:
+                # Create the config.json file if it doesn't already exist
+                config_file = f"{test_run_dir}/config.json"
+                if not os.path.exists(config_file):
+                    open(config_file, "w").close()
 
-              # Open the file in editor
-              input("Press enter to open the editor...")
-              os.system(f"vim {config_file}")
+                # Open the file in editor
+                input("Press enter to open the editor...")
+                os.system(f"vim {config_file}")
 
-              config_file = f"{test_run_dir}/config.json"
-              with open(config_file, "r", encoding="utf-8") as f:
-                  loaded_data = json.load(f)
-              valid_json = is_valid_json(loaded_data)
-          calls = loaded_data["calls"]
-          cids = loaded_data["cids"]
+                config_file = f"{test_run_dir}/config.json"
+                with open(config_file, "r", encoding="utf-8") as f:
+                    loaded_data = json.load(f)
+                valid_json = is_valid_json(loaded_data)
+            calls = loaded_data["calls"]
+            cids = loaded_data["cids"]
 
-      else:
-          cids = (
-              input("Enter customer IDs separated by comma: ").replace(" ", "").split(",")
-          )
-          calls = []
-          more_calls = True
+        else:
+            cids = (
+                input("Enter customer IDs separated by comma: ")
+                .replace(" ", "")
+                .split(",")
+            )
+            calls = []
+            more_calls = True
 
-          while more_calls:
-              call = {}
-              call_endpoint = input(f"Enter call endpoint: {url}/v3/accounts/<cid>/")
-              call["url"] = call_endpoint
-              call["method"] = input("Enter call method (GET/POST): ").upper()
-              if call["method"] == "POST":
-                  call["body"] = input("Enter call body (JSON format): ")
-              calls.append(call)
-              more_calls = input("Add another call? (y/N): ").lower() == "y"
+            while more_calls:
+                call = {}
+                call_endpoint = input(f"Enter call endpoint: {url}/v3/accounts/<cid>/")
+                call["url"] = call_endpoint
+                call["method"] = input("Enter call method (GET/POST): ").upper()
+                if call["method"] == "POST":
+                    call["body"] = input("Enter call body (JSON format): ")
+                calls.append(call)
+                more_calls = input("Add another call? (y/N): ").lower() == "y"
 
     data = {
         "run_start": current_time,
