@@ -1,5 +1,6 @@
 import typer
-from main import run_main
+from main import run_test_tool
+import os
 
 app = typer.Typer()
 
@@ -7,14 +8,15 @@ app = typer.Typer()
 @app.command()
 def start(
     env: str = typer.Option(..., help="Environment (dev/expr/stg1/prod)"),
+    config_path: str = typer.Option("", help="Path to the config.json file"),
     output_dir: str = typer.Option("runs/", help="Output directory for the test run"),
     summary_type: str = typer.Option(
-        "all", help="Summary type: 'all', 'by_endpoint', 'by_cid'"
+        "all", help="Summary type: 'all', 'endpoint', 'cid'"
     ),
-    config_path: str = typer.Option("", help="Path to the config.json file"),
 ):
     """Runs the API test tool with specified options."""
-    run_main(env, output_dir, summary_type, config_path)
+    validate_inputs(env, config_path, output_dir, summary_type)
+    run_test_tool(env, config_path, output_dir, summary_type)
 
 
 @app.command()
@@ -33,3 +35,11 @@ def setup_env(
 
 if __name__ == "__main__":
     app()
+
+def validate_inputs(env: str, config_path: str, output_dir: str, summary_type: str):
+    if env not in ["dev", "expr", "stg1", "prod"]:
+        raise ValueError("Invalid environment. Please choose one of 'dev', 'stg1', 'expr', or 'prod'.")
+    if config_path and not os.path.isfile(config_path):
+        raise FileNotFoundError(f"Config file '{config_path}' does not exist.")
+    if summary_type not in ["all", "endpoint", "cid"]:
+        raise ValueError("Invalid summary type. Please choose 'all', 'endpoint', or 'cid'.")
