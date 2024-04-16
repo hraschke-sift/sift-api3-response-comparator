@@ -60,8 +60,11 @@ def compare_responses(test_run_dir, db_path, cids, calls):
                     # diff = json.dumps(diff, cls=CustomJSONEncoder)
                     c_print.warn("Differences found.")
 
-            set_difference(db_path, cid, eid, str(diff))
-            record_result(test_run_dir, cid, eid, diff)
+            # set_difference(db_path, cid, eid, str(diff))
+            try:
+                record_result(test_run_dir, cid, eid, diff)
+            except:
+                c_print.fail(f"Error recording result for {cid}_{eid}")
     c_print.blue(f"See the complete results in {test_run_dir}/results.json")
 
 
@@ -84,8 +87,12 @@ def record_result(test_run_dir, cid, endpoint, result):
     # check if the results.json exists
     results_file = os.path.join(test_run_dir, "results.json")
     if os.path.exists(results_file):
-        with open(results_file, "r") as file:
-            results = json.load(file)
+        try:
+            with open(results_file, "r") as file:
+                results = json.load(file)
+        except:
+            c_print.fail(f"Error reading results.json for {cid}_{endpoint}")
+            return
     else:
         results = {
             "all_results": {},

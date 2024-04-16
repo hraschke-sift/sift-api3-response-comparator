@@ -109,11 +109,18 @@ def run_test_tool(env, config_path, output_dir, summary_type="eid", skip_pause=F
 
     # Process the output to summarized results
     deepdiff_results = load_json_file(f"{test_run_dir}/results.json")
-    results_summary = process_deepdiff_output(deepdiff_results, summary_type)
+    results_summary, threshold_warnings = process_deepdiff_output(
+        deepdiff_results, summary_type
+    )
     report_file = f"{test_run_dir}/report.json"
     with open(report_file, "w") as f:
         json.dump(results_summary, f, indent=4)
     c_print.blue(f"Results summary written to {report_file}")
+
+    warnings_file = f"{test_run_dir}/warnings.json"
+    with open(warnings_file, "w") as f:
+        json.dump(threshold_warnings, f, indent=4)
+    c_print.blue(f"Warnings written to {warnings_file}")
 
     # Report duration and record end time to config.json
     report_run_duration(test_run_dir)
