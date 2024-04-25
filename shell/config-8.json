@@ -1,0 +1,165 @@
+{
+  "run_start": "2024-04-14 20:52:34",
+  "base_url": "https://staging-console.siftscience.com",
+  "cids": [
+      "54c57697c06fd48799000405",
+      "60aeb07bbe968e78ea29d9d5",
+      "5da8a1994f0c1789dd5a826e",
+      "517195f6c06fd4670b008051",
+      "62ffe9d3980dc259d981eb5e",
+      "62ffe64415ec912f7c94c7a8",
+      "5e41957def0aa956dad5700a",
+      "5af8c1844f0c269f4289bb29",
+      "5a8f507f4f0c42ea22d66f0c",
+      "60f88a09293fb116c8220750",
+      "5ecea9fbef0a3f7a488c0d50",
+      "589cf354e4b054e606d8845b",
+      "4e1a50e172beb95cf1e4ae54",
+      "5e8e233bef0a760715782023"
+  ],
+  "calls": [
+      {
+          "eid": "28_/reporting/v2/bizops/chargebacks2/data",
+          "url": "/reporting/v2/bizops/chargebacks2/data",
+          "method": "POST",
+          "body": {
+              "interval_type": "day",
+              "interval_start": 1704931200000,
+              "interval_end": 1712645999999,
+              "time_zone": "America/Los_Angeles",
+              "chargeback_type": "ALL_CHARGEBACKS",
+              "aggregate_type": "COUNT",
+              "group_by": [],
+              "filter_by": []
+          },
+          "exclude_paths": []
+      },
+      {
+          "eid": "29_/reporting/v2/bizops/orders_chargebacks2/data",
+          "url": "/reporting/v2/bizops/orders_chargebacks2/data",
+          "method": "POST",
+          "body": {
+              "interval_type": "week",
+              "interval_start": 1704931200000,
+              "interval_end": 1712645999999,
+              "time_zone": "America/Los_Angeles",
+              "aggregate_type": "COUNT",
+              "chargeback_type": "ALL_CHARGEBACKS",
+              "group_by": [],
+              "filter_by": []
+          },
+          "exclude_paths": []
+      },
+      {
+          "eid": "30_/reporting/bizops/decisions_applied2/data",
+          "url": "/reporting/bizops/decisions_applied2/data?interval_type=day&entity_type=all&interval_start=1704931200000&interval_end=1712645999999&abuse_type=legacy&time_zone=America%2FLos_Angeles&aggregate_type=MANUAL_DECISIONS",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      },
+      {
+          "eid": "31_/reporting/v2/bizops/orders_order_decisions2/data",
+          "url": "/reporting/v2/bizops/orders_order_decisions2/data",
+          "method": "POST",
+          "body": {
+              "interval_type": "day",
+              "interval_start": 1704931200000,
+              "interval_end": 1712645999999,
+              "abuse_type": "legacy",
+              "time_zone": "America/Los_Angeles",
+              "accounts_type": "ALL_ACCOUNTS",
+              "aggregate_type": "COUNT",
+              "group_by": [],
+              "filter_by": []
+          },
+          "exclude_paths": []
+      },
+      {
+          "eid": "32_/reporting/v2/bizops/orders_user_decisions2/data",
+          "url": "/reporting/v2/bizops/orders_user_decisions2/data",
+          "method": "POST",
+          "body": {
+              "interval_type": "day",
+              "interval_start": 1704931200000,
+              "interval_end": 1712645999999,
+              "abuse_type": "legacy",
+              "time_zone": "America/Los_Angeles",
+              "aggregate_type": "COUNT",
+              "accounts_type": "ALL_ACCOUNTS",
+              "group_by": [],
+              "filter_by": []
+          },
+          "exclude_paths": []
+      },
+      {
+          "eid": "33_/reporting/v2/bizops/orders_transactions2/data",
+          "url": "/reporting/v2/bizops/orders_transactions2/data",
+          "method": "POST",
+          "body": {
+              "interval_type": "day",
+              "interval_start": 1704931200000,
+              "interval_end": 1712645999999,
+              "time_zone": "America/Los_Angeles",
+              "aggregate_type": "COUNT",
+              "group_by": [],
+              "filter_by": []
+          },
+          "exclude_paths": []
+      },
+      {
+          "eid": "34_/reporting/v2/bizops/chargebacks2/data",
+          "url": "/reporting/v2/bizops/chargebacks2/data",
+          "method": "POST",
+          "body": {
+              "interval_type": "day",
+              "interval_start": 1704931200000,
+              "interval_end": 1712645999999,
+              "time_zone": "America/Los_Angeles",
+              "chargeback_type": "ALL_CHARGEBACKS",
+              "aggregate_type": "COUNT",
+              "group_by": [],
+              "filter_by": []
+          },
+          "exclude_paths": []
+      },
+      {
+          "eid": "35_/reporting/v2/bizops/orders_order_decisions2/data",
+          "url": "/reporting/v2/bizops/orders_order_decisions2/data",
+          "method": "POST",
+          "body": {
+              "interval_type": "day",
+              "interval_start": 1704931200000,
+              "interval_end": 1712645999999,
+              "abuse_type": "payment_abuse",
+              "time_zone": "America/Los_Angeles",
+              "accounts_type": "ALL_ACCOUNTS",
+              "aggregate_type": "COUNT",
+              "group_by": [],
+              "filter_by": []
+          },
+          "exclude_paths": []
+      },
+      {
+          "eid": "36_/reporting/v2/bizops/orders_user_decisions2/data",
+          "url": "/reporting/v2/bizops/orders_user_decisions2/data",
+          "method": "POST",
+          "body": {
+              "interval_type": "day",
+              "interval_start": 1704931200000,
+              "interval_end": 1712645999999,
+              "abuse_type": "payment_abuse",
+              "time_zone": "America/Los_Angeles",
+              "aggregate_type": "COUNT",
+              "accounts_type": "ALL_ACCOUNTS",
+              "group_by": [],
+              "filter_by": []
+          },
+          "exclude_paths": []
+      }
+  ],
+  "run_end": "2024-04-14 21:26:55"
+}

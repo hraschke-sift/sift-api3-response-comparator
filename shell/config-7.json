@@ -1,0 +1,122 @@
+{
+  "run_start": "2024-04-14 20:52:34",
+  "base_url": "https://staging-console.siftscience.com",
+  "cids": [
+      "54c57697c06fd48799000405",
+      "60aeb07bbe968e78ea29d9d5",
+      "5da8a1994f0c1789dd5a826e",
+      "517195f6c06fd4670b008051",
+      "62ffe9d3980dc259d981eb5e",
+      "62ffe64415ec912f7c94c7a8",
+      "5e41957def0aa956dad5700a",
+      "5af8c1844f0c269f4289bb29",
+      "5a8f507f4f0c42ea22d66f0c",
+      "60f88a09293fb116c8220750",
+      "5ecea9fbef0a3f7a488c0d50",
+      "589cf354e4b054e606d8845b",
+      "4e1a50e172beb95cf1e4ae54",
+      "5e8e233bef0a760715782023"
+  ],
+  "calls": [
+      {
+          "eid": "19_/reporting/bizops/session_decisions/data",
+          "url": "/reporting/bizops/session_decisions/data?interval_type=day&ato_score=_46&interval_start=1704931200000&interval_end=1712620799999&time_zone=UTC&decision_aggregate_type=TOTAL&decision_reason=MANUAL",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      },
+      {
+          "eid": "20_/reporting/bizops/session_decisions/data",
+          "url": "/reporting/bizops/session_decisions/data?interval_type=day&ato_score=_85&interval_start=1704931200000&interval_end=1712620799999&time_zone=UTC&decision_aggregate_type=TOTAL&decision_reason=MANUAL",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      },
+      {
+          "eid": "21_/reporting/bizops/accounts_decisions2/data",
+          "url": "/reporting/bizops/accounts_decisions2/data?interval_type=day&interval_start=1704931200000&interval_end=1712645999999&abuse_type=content_abuse&time_zone=America%2FLos_Angeles&aggregate_type=ALL_ACCOUNTS",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      },
+      {
+          "eid": "22_/reporting/bizops/accounts_decisions2/data",
+          "url": "/reporting/bizops/accounts_decisions2/data?interval_type=day&interval_start=1704931200000&interval_end=1712645999999&abuse_type=account_abuse&time_zone=America%2FLos_Angeles&aggregate_type=ALL_ACCOUNTS",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      },
+      {
+          "eid": "23_/reporting/bizops/content_content_decisions/data",
+          "url": "/reporting/bizops/content_content_decisions/data?interval_type=day&content_types=comment%2Clegacy%2Clisting%2Cmessage%2Cpost%2Cprofile%2Creview&interval_start=1704931200000&interval_end=1712645999999&time_zone=America%2FLos_Angeles&aggregate_type=ALL_CONTENT",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      },
+      {
+          "eid": "24_/reporting/bizops/content_user_decisions/data",
+          "url": "/reporting/bizops/content_user_decisions/data?interval_type=day&content_types=comment%2Clegacy%2Clisting%2Cmessage%2Cpost%2Cprofile%2Creview&interval_start=1704931200000&interval_end=1712645999999&time_zone=America%2FLos_Angeles&aggregate_type=ALL_CONTENT",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      },
+      {
+          "eid": "25_/reporting/bizops/content_flags/data",
+          "url": "/reporting/bizops/content_flags/data?content_types=comment%2Clegacy%2Clisting%2Cmessage%2Cpost%2Cprofile%2Creview&interval_type=day&interval_start=1704931200000&interval_end=1712645999999&time_zone=America%2FLos_Angeles",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      },
+      {
+          "eid": "26_/reporting/bizops/accounts_decisions2/data",
+          "url": "/reporting/bizops/accounts_decisions2/data?interval_type=day&interval_start=1704931200000&interval_end=1712645999999&abuse_type=legacy&time_zone=America%2FLos_Angeles&aggregate_type=ALL_ACCOUNTS",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      },
+      {
+          "eid": "27_/reporting/bizops/segments",
+          "url": "/reporting/bizops/segments",
+          "method": "GET",
+          "body": null,
+          "exclude_paths": [
+              "root['request']",
+              "root['charts']",
+              "root['summary']"
+          ]
+      }
+  ],
+  "run_end": "2024-04-14 21:26:55"
+}
