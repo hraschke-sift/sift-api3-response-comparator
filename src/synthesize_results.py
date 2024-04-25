@@ -146,15 +146,15 @@ def summarize_changes_by_cid(deepdiff_results: Dict[str, Any]) -> Dict[str, floa
 
 
 def process_deepdiff_output(
-    deepdiff_results: Dict[str, Any], summary_type: str
+  deepdiff_results: Dict[str, Any], summary_type: str = "endpoint"
 ) -> Dict[str, float]:
-    if summary_type == "endpoint":
-        return summarize_changes_by_endpoint(deepdiff_results)
-    elif summary_type == "cid":
-        return summarize_changes_by_cid(deepdiff_results)
-    elif summary_type == "changes":
-        return summarize_all_changes(deepdiff_results)
-    else:
-        raise ValueError(
-            "Invalid summary type. Please choose 'endpoint', 'cid', or 'all'."
-        )
+  if summary_type == "endpoint":
+    return summarize_changes_by_endpoint(deepdiff_results)
+  elif summary_type == "cid":
+    return summarize_changes_by_cid(deepdiff_results)
+  elif summary_type == "changes":
+    return summarize_all_changes(deepdiff_results)
+  else:
+    raise ValueError(
+      "Invalid summary type. Please choose 'endpoint', 'cid', or 'changes'."
+    )
