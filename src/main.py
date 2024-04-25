@@ -108,6 +108,7 @@ def run_test_tool(env="", config_path="", output_dir="", summary_type="eid", ski
     compare_responses(test_run_dir, db_path, cids, calls)
 
     # Process the output to summarized results
+    # TODO(henry): Error here loading json file
     deepdiff_results = load_json_file(f"{test_run_dir}/results.json")
     results_summary, threshold_warnings = process_deepdiff_output(
         deepdiff_results, summary_type

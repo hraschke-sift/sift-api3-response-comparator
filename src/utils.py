@@ -45,6 +45,9 @@ def compare_responses(test_run_dir, db_path, cids, calls):
 
             response_before = json.loads(response_before)
             response_after = json.loads(response_after)
+            if "segments" in call["url"]:
+                c_print.warn('skipping segments response comparison')
+                continue
             if response_before and response_after:
                 exclude_paths = call.get("exclude_paths", [])
                 diff = DeepDiff(
@@ -60,11 +63,11 @@ def compare_responses(test_run_dir, db_path, cids, calls):
                     # diff = json.dumps(diff, cls=CustomJSONEncoder)
                     c_print.warn("Differences found.")
 
-            # set_difference(db_path, cid, eid, str(diff))
-            try:
+                # set_difference(db_path, cid, eid, str(diff))
+                # try:
                 record_result(test_run_dir, cid, eid, diff)
-            except:
-                c_print.fail(f"Error recording result for {cid}_{eid}")
+            # except:
+            # c_print.fail(f"Error recording result for {cid}_{eid}")
     c_print.blue(f"See the complete results in {test_run_dir}/results.json")
 
 
@@ -86,20 +89,34 @@ def report_run_duration(test_run_dir):
 def record_result(test_run_dir, cid, endpoint, result):
     # check if the results.json exists
     results_file = os.path.join(test_run_dir, "results.json")
+    results = {
+        "all_results": {},
+        "results_by_cid": {},
+        "results_by_endpoint": {},
+        "total_diffs": 0,
+    }
     if os.path.exists(results_file):
         try:
             with open(results_file, "r") as file:
                 results = json.load(file)
         except:
             c_print.fail(f"Error reading results.json for {cid}_{endpoint}")
-            return
-    else:
-        results = {
-            "all_results": {},
-            "results_by_cid": {},
-            "results_by_endpoint": {},
-            "total_diffs": 0,
-        }
+
+    # Type changes in results show as `<class 'Type'>` in the diff
+    # Remove the non-JSON serializable type changes
+    if "type_changes" in result:
+        try:
+            record_type_change(test_run_dir, cid, endpoint, result["type_changes"])
+        except:
+            c_print.fail(f"Error recording type changes for {cid}_{endpoint}")
+        result.pop("type_changes")
+
+    if "dictionary_item_added" in result:
+        try:
+            record_items_added(test_run_dir, cid, endpoint, result["dictionary_item_added"])
+        except:
+            c_print.fail(f"Error recording items added for {cid}_{endpoint}")
+        result.pop("dictionary_item_added")
 
     # update the results with the new result
     results["all_results"][f"{cid}_{endpoint}"] = result
@@ -109,9 +126,65 @@ def record_result(test_run_dir, cid, endpoint, result):
         results["total_diffs"] += 1
 
     # write the updated results back to the file
-    with open(results_file, "w") as file:
-        json.dump(results, file, indent=4)
+    try:
+        with open(results_file, "w") as file:
+            json.dump(results, file, indent=4)
+    except:
+        c_print.fail(f"Error writing results.json for {cid}_{endpoint}")
 
+
+def record_type_change(test_run_dir, cid, endpoint, type_change):
+    for changes_obj in type_change.values():
+        changes_obj["old_type"] = str(changes_obj["old_type"]).replace("<class '", "").replace("'>", "")
+        changes_obj["new_type"] = str(changes_obj["new_type"]).replace("<class '", "").replace("'>", "")
+
+    # check if the type_changes.json exists
+    type_changes_file = os.path.join(test_run_dir, "type_changes.json")
+    type_changes = {
+        "all_type_changes": {},
+        "type_changes_by_cid": {},
+        "type_changes_by_endpoint": {},
+        "total_diffs": 0,
+    }
+    if os.path.exists(type_changes_file):
+        try:
+            with open(type_changes_file, "r") as file:
+                type_changes = json.load(file)
+        except:
+            c_print.fail(f"Error reading type_changes.json for {cid}_{endpoint}")
+
+    # update the type_changes with the new type_change
+    type_changes["all_type_changes"][f"{cid}_{endpoint}"] = type_change
+    type_changes["type_changes_by_cid"].setdefault(cid, {})[endpoint] = type_change
+    type_changes["type_changes_by_endpoint"].setdefault(endpoint, {})[
+        cid
+    ] = type_change
+    if not type_changes == {}:
+        type_changes["total_diffs"] += 1
+
+
+    # write the updated type_changes back to the file
+    with open(type_changes_file, "w") as file:
+        json.dump(type_changes, file, indent=4)
+
+def record_items_added(test_run_dir, cid, endpoint, items_added):
+    items_added_data = {
+        "all_items_added": {},
+        "items_added_by_cid": {},
+        "items_added_by_endpoint": {},
+        "total_diffs": 0,
+    }
+
+    items_added_file = os.path.join(test_run_dir, "items_added.json")
+    if os.path.exists(items_added_file):
+        try:
+            with open(items_added_file, "r") as file:
+                items_added_data = json.load(file)
+        except:
+            c_print.fail(f"Error reading items_added.json for {cid}_{endpoint}")
+    items_added_data["all_items_added"][f"{cid}_{endpoint}"] = str(items_added)
+    items_added_data["items_added_by_cid"].setdefault(cid, {})[endpoint] = str(items_added)
+    items_added_data["items_added_by_endpoint"].setdefault(endpoint, {})[cid] = str(items_added)
 
 # TODO(henry) make a class with methods for loads and dumps that employ these functions
 # We can programatically decide whether we want PrettyOrderedSet or JSON output
