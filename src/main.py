@@ -61,7 +61,7 @@ def execute_api_calls(
     print("")
 
 
-def run_test_tool(env, config_path, output_dir, summary_type="eid", skip_pause=False):
+def run_test_tool(env="", config_path="", output_dir="", summary_type="eid", skip_pause=False):
     # Get environment and create test run directory
     if not env:
         env = input("Enter environment (dev/expr/stg1/prod): ").lower()
@@ -127,4 +127,4 @@ def run_test_tool(env, config_path, output_dir, summary_type="eid", skip_pause=F
 
 
 if __name__ == "__main__":
-    print("This script should be run via the CLI.")
+    run_test_tool()
