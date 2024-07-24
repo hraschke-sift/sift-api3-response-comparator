@@ -9,7 +9,6 @@ from synthesize_results import process_deepdiff_output
 import os
 
 
-
 def main():
     runs_dir = "runs"
     summary_type = "endpoint"
@@ -25,7 +24,9 @@ def main():
             continue
         record_results(f"runs/{test_run_dir}", summary_type)
 
-def record_results(test_run_dir, db_path, summary_type="endpoint"):
+
+def record_results(test_run_dir, summary_type="endpoint"):
+    print(f"Recording results for {test_run_dir}...")
     config_file = load_json_file(f"{test_run_dir}/config.json")
     cids = config_file["cids"]
     calls = config_file["calls"]
@@ -49,6 +50,7 @@ def record_results(test_run_dir, db_path, summary_type="endpoint"):
     with open(warnings_file, "w") as f:
         json.dump(threshold_warnings, f, indent=4)
     c_print.blue(f"Warnings written to {warnings_file}")
+
 
 if __name__ == "__main__":
     main()
