@@ -19,7 +19,7 @@ def calculate_averages(runs_dir):
                   report_count += 1
                   # Sum the values for each key
                   for key, value in data.items():
-                      key = key.split('_')[1] # remove leading index
+                      key = '_'.join(key.split('_')[1:]) # remove leading index
                       sums[key]['value'] += value
                       sums[key]['count'] += 1
 
@@ -39,7 +39,7 @@ def calculate_averages(runs_dir):
             data = json.load(file)
             # Sum the squared differences for each key
             for key, value in data.items():
-              key = key.split('_')[1] # remove leading index
+              key = '_'.join(key.split('_')[1:]) # remove leading index
               squared_diff_sums[key]['value'] += (value - averages[key]) ** 2
               squared_diff_sums[key]['count'] += 1
 
