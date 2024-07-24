@@ -83,15 +83,23 @@ def summarize_changes_by_endpoint(deepdiff_results: Dict[str, Any]) -> Dict[str,
     results = {}
     threshold_warnings = {}
     for endpoint, cid_changes in deepdiff_results["results_by_endpoint"].items():
-        all_changes = []
+        magnitude_changes = []
+        degree_changes = []
+        counts_by_customer = {}
         for cid, change_obj in cid_changes.items():
+            # just do table changes, ignore chart changes for now
+            data_counts = change_obj.get("data_counts", {})
+            change_counts = 0
             values_changed = change_obj.get("values_changed")
             if values_changed:  # There are changes to process
                 for change_path_string, change_value_object in values_changed.items():
+                    # just do table changes, ignore chart changes for now
+                    if change_path_string.startswith("root['table']['data']"):
+                        change_counts += 1
                     old_value = change_value_object["old_value"]
                     new_value = change_value_object["new_value"]
                     if isinstance(old_value, list) and isinstance(new_value, list):
-                        all_changes.append(process_arrays(old_value, new_value))
+                        magnitude_changes.append(process_arrays(old_value, new_value))
                     elif isinstance(old_value, (int, float)) and isinstance(
                         new_value, (int, float)
                     ):
@@ -104,11 +112,33 @@ def summarize_changes_by_endpoint(deepdiff_results: Dict[str, Any]) -> Dict[str,
                             change_path_string,
                             threshold_warnings,
                         )
-                        all_changes.append(percentage_difference)
+                        magnitude_changes.append(percentage_difference)
             else:  # No changes, treat as 0 change
-                all_changes.append(0.0)
-        if all_changes:
-            results[endpoint] = sum(all_changes) / len(all_changes)
+                magnitude_changes.append(0.0)
+            # just do table changes, ignore chart changes for now
+            degree_changes.append(
+                change_counts / data_counts.get("table")
+                if data_counts.get("table")
+                else 0.0
+            )
+            counts_by_customer[cid] = {
+                "total": data_counts.get("table", 0),
+                "changed": change_counts,
+            }
+
+        results[endpoint] = {
+            "magnitude": (
+                sum(magnitude_changes) / len(magnitude_changes)
+                if len(magnitude_changes) != 0
+                else 0
+            ),
+            "degree": (
+                sum(degree_changes) / len(degree_changes)
+                if len(degree_changes) != 0
+                else 0
+            ),
+            "data_counts": counts_by_customer,
+        }
     return results, threshold_warnings
 
 
@@ -146,15 +176,11 @@ def summarize_changes_by_cid(deepdiff_results: Dict[str, Any]) -> Dict[str, floa
 
 
 def process_deepdiff_output(
-  deepdiff_results: Dict[str, Any], summary_type: str = "endpoint"
+    deepdiff_results: Dict[str, Any], summary_type: str = "endpoint"
 ) -> Dict[str, float]:
-  if summary_type == "endpoint":
-    return summarize_changes_by_endpoint(deepdiff_results)
-  elif summary_type == "cid":
-    return summarize_changes_by_cid(deepdiff_results)
-  elif summary_type == "changes":
-    return summarize_all_changes(deepdiff_results)
-  else:
-    raise ValueError(
-      "Invalid summary type. Please choose 'endpoint', 'cid', or 'changes'."
-    )
+    if not summary_type or summary_type == "endpoint":
+        return summarize_changes_by_endpoint(deepdiff_results)
+    elif summary_type == "cid":
+        return summarize_changes_by_cid(deepdiff_results)
+    elif summary_type == "changes":
+        return summarize_all_changes(deepdiff_results)
