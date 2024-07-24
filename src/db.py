@@ -73,7 +73,11 @@ def get_responses(db_path, customer_id, endpoint):
         "SELECT response_before, response_after FROM api_responses WHERE customer_id = ? AND endpoint = ?",
         (customer_id, endpoint),
     )
-    response_before, response_after = cursor.fetchone()
+    try:
+        response_before, response_after = cursor.fetchone()
+    except TypeError:
+        print("trouble parsing response: ", cursor.fetchone())
+        response_before, response_after = None, None
     conn.close()
 
     return response_before, response_after
