@@ -1,5 +1,7 @@
-import requests
 import time
+
+import requests
+
 from auth import get_auth_token
 from output import c_print
 

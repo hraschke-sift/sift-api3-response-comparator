@@ -1,12 +1,9 @@
 import json
-from utils import (
-    load_json_file,
-    compare_responses,
-    report_run_duration,
-)
+import os
+
 from output import c_print
 from synthesize_results import process_deepdiff_output
-import os
+from utils import compare_responses, load_json_file, report_run_duration
 
 
 def main():

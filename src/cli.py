@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-import typer
 import os
+
+import typer
+
 from main import run_test_tool
 
 

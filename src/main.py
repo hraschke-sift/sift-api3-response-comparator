@@ -1,15 +1,12 @@
 import json
+
 from api_client import make_api_call
-from user_input_client import generate_config_json
-from utils import (
-    create_run_directory,
-    load_json_file,
-    compare_responses,
-    report_run_duration,
-)
-from output import c_print
 from db import create_database, insert_or_update_response
+from output import c_print
 from synthesize_results import process_deepdiff_output
+from user_input_client import generate_config_json
+from utils import (compare_responses, create_run_directory, load_json_file,
+                   report_run_duration)
 
 
 def execute_api_calls(

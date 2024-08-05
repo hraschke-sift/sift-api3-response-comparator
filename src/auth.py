@@ -1,10 +1,12 @@
 import os
+from getpass import getpass
+
 import requests
 import yaml
-from output import c_print
-from getpass import getpass
-from utils import get_url_from_env
 from dotenv import load_dotenv
+
+from output import c_print
+from utils import get_url_from_env
 
 # TODO(henry) - this currently writes and reads from the same file for
 # every environment. Figure out how it works in the ruby client and mimic

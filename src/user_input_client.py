@@ -1,8 +1,9 @@
-import json
 import datetime
+import json
+import os
+
 from output import c_print
 from utils import get_url_from_env
-import os
 
 
 def make_calls_list(calls):

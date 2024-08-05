@@ -1,11 +1,13 @@
-import os
 import json
 import math
+import os
 from datetime import datetime
-from output import c_print
-from db import get_responses, set_difference
+
 from deepdiff import DeepDiff
 from deepdiff.model import PrettyOrderedSet
+
+from db import get_responses, set_difference
+from output import c_print
 
 
 def load_json_file(file_path):
