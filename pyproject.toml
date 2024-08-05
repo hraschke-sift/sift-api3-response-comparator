@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "sift-api3-response-comparator"
+version = "0.1.0"
+description = "tool to automate the process of validating database migrations and API3 changes that specifically affect data in the console"
+authors = ["Henry <hraschke@siftscience.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+black = "24.3.0"
+certifi = "2024.2.2"
+charset-normalizer = "3.3.2"
+click = "8.1.7"
+deepdiff = "7.0.0"
+idna = "3.6"
+markdown-it-py = "3.0.0"
+mdurl = "0.1.2"
+mypy-extensions = "1.0.0"
+ordered-set = "4.1.0"
+packaging = "24.0"
+pathspec = "0.12.1"
+platformdirs = "4.2.0"
+pygments = "2.17.2"
+python-dotenv = "1.0.1"
+pyyaml = "6.0.1"
+requests = "2.31.0"
+rich = "13.7.1"
+shellingham = "1.5.4"
+tomli = "2.0.1"
+typer = "0.12.3"
+typing-extensions = "4.11.0"
+urllib3 = "2.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
